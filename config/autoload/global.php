@@ -13,7 +13,7 @@
 return array(
 	 "db" => array(
 	 	"driver"   => "Pdo_Mysql",
-	 	"database" => "zend_auto",
+	 	"database" => "zend_auto_code",
 	 	"charset"  => "utf8"
 	 ),
 	 "service_manager" => array(

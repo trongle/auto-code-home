@@ -1,6 +1,7 @@
 <?php 
 
-	define("BASE_URL","http://localhost");
+	// define("BASE_URL","http://localhost");
+	define("BASE_URL","");
 	define("PATH_APPLICATION",realpath(dirname(__DIR__)));
 	define("PATH_LIBRARY",PATH_APPLICATION."/library/");
 	define("PATH_PUBLIC",PATH_APPLICATION."/public/");
@@ -11,8 +12,8 @@
 	define("HTMLPURIFIER_PREFIX",PATH_APPLICATION."/vendor/");
 	define("PATH_SCRIPT",PATH_PUBLIC."script/");
 	
-	define("URL_APPLICATION","/zf2");
-	define("URL_PUBLIC",URL_APPLICATION."/public/");
+	define("URL_APPLICATION","http://zend-auto.dev");
+	define("URL_PUBLIC",URL_APPLICATION."/");
 	define("URL_TEMPLATE",URL_PUBLIC."template/");
 	define("URL_FILES",URL_PUBLIC."files/");
 	define("URL_SCRIPT",URL_PUBLIC."script/");
