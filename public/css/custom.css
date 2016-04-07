@@ -1,0 +1,28 @@
+.container .box{
+	background-color: #e2eecf;
+	padding: 5px 0;
+	margin-bottom: 20px; 
+}
+
+.row .removeVal{
+	color : red;
+	margin : 0 7px;
+}
+
+.row .removeVal:hover{
+	cursor : pointer
+}
+
+.row .display-code{
+	height : 500px;
+	width : 500px;
+	margin-right:5px;
+}
+
+.display-code #code{
+	font-size : 11px;
+}
+
+hr{
+	border-top : #ddd 2px solid !important;
+}
