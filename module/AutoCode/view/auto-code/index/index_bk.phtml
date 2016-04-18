@@ -1,6 +1,6 @@
 <?php $urlActionValidateForm = BASE_URL. $this->url('code/default',['action' => 'validate']) ?>
-<?php
-
+<?php 
+	
 	$classHide = 'hide';
 	if(isset($typeDisplay) && $typeDisplay == 'editForm'){
 		$classHide = '';
@@ -77,7 +77,7 @@
 					 <div class="col-md-4">
 					 	<div class="form-group">
 					    	<label for="name">Name Element</label>
-					    	<input type="text" id="nameElement" value="<?php echo @$infoForm->content['inputPassword']['nameElement'] ?>" name="nameElement" class="form-control"/>
+					    	<input type="text" id="nameElement" name="nameElement" class="form-control"/>
 					    </div>
 					 </div>
 					 
@@ -110,43 +110,42 @@
 					<div class="col-md-4">
 						<div class="form-group">					
 						    <label for="id">ID</label>
-						    <input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['attribute']['id'] ?>" id="idElement" name="idElement" class="form-control"/>
+						    <input type="text" id="idElement" name="idElement" class="form-control"/>
 					    </div>
 					 </div>
 					 
 					 <div class="col-md-4">
 					 	<div class="form-group">
 					    	<label for="class">Class</label>
-					    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['attribute']['class'] ?>" id="classElement" name="classElement" class="form-control"/>
+					    	<input type="text" id="classElement" name="classElement" class="form-control"/>
 					    </div>
 					 </div>
 					 
 					 <div class="col-md-4">
 					 	<div class="form-group">
 					 		<label for="placeElement">Placeholder</label><br/>
-					    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['attribute']['placeholder'] ?>" name="placeElement" id="placeElement" class="form-control"/>
+					    	<input type="text" name="placeElement" id="placeElement" class="form-control"/>
 					    </div>
 					 </div>
 					 
 					 <div class="col-md-4">
 					 	<div class="form-group">
 					 		<label for="valueElement">Value</label><br/>
-					    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['attribute']['value'] ?>" name="valueElement" id="valueElement" class="form-control"/>
+					    	<input type="text" name="valueElement" id="valueElement" class="form-control"/>
 					    </div>
 					 </div>
 
 					 <div class="col-md-4">
 					 	<div class="form-group">
 					 		<label for="requiredElement">Required</label><br/>
-					 		<?php  $checked = (@$infoForm->content['inputPassword']['requiredElement'] == 'on')? "checked" : ""; ?>
-					    	<input type="checkbox" <?php echo $checked ?> name="requiredElement" id="requiredElement"/>
+					    	<input type="checkbox" name="requiredElement" id="requiredElement"/>
 					    </div>
 					 </div>
 					 
 					 <div class="col-md-4">
 					 	<div class="form-group">
 					 		<label for="attrElement">Attributes</label><br/>
-					    	<textarea class="form-control" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['attribute']['attr'] ?>" name="attrElement" placeholder="onclick : function()" id="attrElement" cols="30" rows="5"></textarea>
+					    	<textarea class="form-control" name="attrElement" placeholder="onclick : function()" id="attrElement" cols="30" rows="5"></textarea>
 					    </div>
 					 </div>
 					 
@@ -158,21 +157,21 @@
 					<div class="col-md-4">
 						<div class="form-group">					
 						    <label for="id">Label name</label>
-						    <input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['option']['nameLabel'] ?>" id="nameLabel" name="nameLabel" class="form-control"/>
+						    <input type="text" id="nameLabel" name="nameLabel" class="form-control"/>
 					    </div>
 					</div>
 					 
 					<div class="col-md-4">
 					 	<div class="form-group">
 					    	<label for="class">Label class</label>
-					    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['option']['classLabel'] ?>" id="classLabel" name="classLabel" class="form-control"/>
+					    	<input type="text" id="classLabel" name="classLabel" class="form-control"/>
 					    </div>
 					</div>
 					 
 					<div class="col-md-4">
 					 	<div class="form-group">
 					 		<label for="placeElement">For</label><br/>
-					    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['option']['forLabel'] ?>" name="forLabel" id="forLabel" class="form-control"/>
+					    	<input type="text" name="forLabel" id="forLabel" class="form-control"/>
 					    </div>
 					</div>
 					 
@@ -182,21 +181,21 @@
 						<div class="col-md-4">
 						 	<div class="form-group">
 						 		<label for="emptyOption">Empty option</label><br/>
-						    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['option']['emptyOption'] ?>"  name="emptyOption" id="emptyOption" class="form-control"/>
+						    	<input type="text" name="emptyOption" id="emptyOption" class="form-control"/>
 						    </div>
 						</div>
 
 						<div class="col-md-4">
 						 	<div class="form-group">
 						 		<label for="valueOption">Value option</label><br/>
-						    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['option']['valueOption'] ?>"  name="valueOption" id="valueOption" placeholder="1,2,3,4" class="form-control"/>
+						    	<input type="text" name="valueOption" id="valueOption" placeholder="1,2,3,4" class="form-control"/>
 						    </div>
 						</div>
 
 						<div class="col-md-4">
 						    <div class="form-group">
 						 		<label for="nameOption">Name option</label><br/>
-						    	<input type="text" value="<?php echo @$infoForm->content['inputPassword']['inputPassword']['option']['nameOption'] ?>" name="nameOption" placeholder="name1,name2,name3,name4" id="nameOption" class="form-control"/>
+						    	<input type="text" name="nameOption" placeholder="name1,name2,name3,name4" id="nameOption" class="form-control"/>
 						    </div>
 						</div>
 					</div>
@@ -220,7 +219,7 @@
 					 	<div class="form-group" >
 					 		<label>&nbsp;</label><br/>
 					    	<select name="validateElement" id="validateElement" class="form-control">
-					    		<?php							
+					    		<?php					    			
 					    		 	$list = "<option value='not-validate'>Choose Validate Type</option>";
 					    		 	foreach($this->validateElement as $vali){
 					    		 		$list .= '<option value="'. ($vali['name']) .'">'. $vali['name'] .'</option>';
@@ -295,35 +294,13 @@
 <?php $url = $this->url('code/default',array('action' => 'loadTemplate')) ?>
 <script type="text/javascript">
 	$(document).ready(function(){
-		// EDIT FORM
-		checkSelected();
-		nameElement = $("#nameElement").val();
-		typeElement = $("#typeElement").val();
-		
-		//show form Add Atrributes Element
-		$("#elementAttrs").removeClass("hide");
-		changeIdInput(nameElement);
-		<?php foreach(@$infoForm->content['inputPassword']['inputPassword']['validateName'] as $key => $val): ?>
-		HandleFormOption("<?php echo $val ?>",nameElement,"#validateList",'.showTemplateValidate','validate');
-		<?php endforeach; ?>
-
-		<?php if(count(@$infoForm->content['inputPassword']['inputPassword']['filterName']) > 0 ): ?>
-		<?php foreach(@$infoForm->content['inputPassword']['inputPassword']['filterName'] as $key => $val): ?>
-		HandleFormOption("#filterElement",nameElement,"#filterList",'.showTemplateValidate','filter');
-		<?php endforeach; ?>
-		<?php endif; ?>
-
-		
-		// END EDIT FORM
-
-
 		$("#createForm").click(function(){
 			if($("input[name=inputNameForm]").val() === ""){
 				$("#errorNameForm").removeClass("hide");
 			}else{
 				$("#errorNameForm").addClass("hide");
 				$.ajax({
-					url  : "<?php echo $this->url('form/default',array('action' => 'addFormDraf')) ?>",
+					url : "<?php echo $this->url('form/default',array('action' => 'addFormDraf')) ?>",
 					type : 'POST',
 					data : {
 						'nameForm' : $("input[name=inputNameForm]").val(),
@@ -367,8 +344,9 @@
 	})
 
 	function HandleFormOption(selectorMain,nameElement,selectorList,selectorTemplate,type){
-			var validateValue = selectorMain;
-			var validateName  = selectorMain;
+
+			var validateValue = $(selectorMain + " :selected").val();
+			var validateName  = $(selectorMain + " :selected").text();
 			var fileName      = validateValue.toLowerCase() + '.php';
 	
 		   	$.ajax({
@@ -380,27 +358,16 @@
 				type 	 : 'GET',
 				dataType : 'json',
 				success  : function(data){
-					// console.log(data);
+					
 					if(data.template === 'no'){
 						var haveTemplate = 'no';
 		    			addValidateRow(selectorList,validateValue,validateName,nameElement,haveTemplate,type);
 					}else{
 						var haveTemplate = 'yes';
 		    			addValidateRow(selectorList,validateValue,validateName,nameElement,haveTemplate,type);
-						
+
 						var templateFormated = data.template.replace(/my_element/g,nameElement);
 						$("li[name=" + validateValue + "] "+selectorTemplate).append(templateFormated);
-
-		    			<?php if(count(@$infoForm->content['inputPassword']['inputPassword']['validateOption']) > 0 ): ?>
-							<?php  foreach($infoForm->content['inputPassword']['inputPassword']['validateOption'] as $key => $val): ?>
-									<?php foreach($val as $key2 => $val2): ?>
-										$("#<?php echo $key ?>-<?php echo $key2 ?>").val("<?php echo $val2 ?>");
-										<?php if($val2 == 'on'): ?>
-											$("#<?php echo $key ?>-<?php echo $key2 ?>").attr("checked","checked");
-										<?php endif; ?>
-									<?php endforeach; ?>
-							<?php endforeach; ?>
-						<?php endif; ?>
 
 						$(".show-option-validate").on('click',function(){
 						    var self = this;
@@ -606,14 +573,6 @@
 	function hideValidateTemplate(selector,tagA){
 		$(selector).parents('.showTemplateValidate').removeClass("animated zoomIn").addClass('hide');
 		$(tagA).prev('span').removeClass('glyphicon-minus').addClass('glyphicon-plus');
-	}
-
-	function checkSelected(){
-		$("#typeElement option").each(function(index,val){
-			if($(val).val() === "<?php echo $infoForm->content['inputPassword']['typeElement'] ?>"){
-				$(val).attr("selected","selected");
-			}
-		})
 	}
 	
 </script>
