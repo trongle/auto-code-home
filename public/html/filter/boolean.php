@@ -1,17 +1,17 @@
 <form id="boolean">	
 	<div class="form-group col-md-6">
 		<label for="min">Translations:</label>
-		<input type="text" name="my_element[filterOption][boolean][translations]" placeholder="a1,a2,a3..." class="form-control" />
+		<input type="text" id="boolean-translations" name="my_element[filterOption][boolean][translations]" placeholder="a1,a2,a3..." class="form-control" />
 	</div>
 
 	<div class="form-group col-md-12">
 		Casting:
-		<input type="checkbox" name="my_element[filterOption][boolean][casting]" />
+		<input type="checkbox" id="boolean-casting" name="my_element[filterOption][boolean][casting]" />
 	</div>
 
 	<div class="form-group col-md-12">
 		<label for="min">Type:</label>
-		<input type="number" name="my_element[filterOption][boolean][type]"  class="form-control" />
+		<input type="number" id="boolean-type" name="my_element[filterOption][boolean][type]"  class="form-control" />
 	</div>
 
 	<div class="form-group col-md-12">	   
@@ -19,4 +19,10 @@
     	<button class="btn btn-info cancel" >Cancel</button>		        			    
     </div> 
 </form>   
-                            
+<div class="hidden-edit">
+	<input type="hidden" class="boolean-translations" name="my_element[filterOption][boolean][translations]" placeholder="a1,a2,a3..." class="form-control" />
+	<input type="hidden" class="boolean-type" name="my_element[filterOption][boolean][type]"  class="form-control" />
+	<div class="hide">
+		<input type="checkbox" class="boolean-casting" name="my_element[filterOption][boolean][casting]" />
+	</div>
+</div>

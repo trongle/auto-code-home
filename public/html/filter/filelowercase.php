@@ -2,7 +2,7 @@
 
 	<div class="form-group col-md-6">
 		<label for="min">Encoding:</label>
-		<input type="text" name="my_element[filterOption][filelowercase][encoding]" class="form-control" />
+		<input type="text" id="filelowercase-encoding" name="my_element[filterOption][filelowercase][encoding]" class="form-control" />
 	</div>
 
 	<div class="form-group col-md-12">	   
@@ -10,4 +10,6 @@
     	<button class="btn btn-info cancel" >Cancel</button>		        			    
     </div> 
 </form>   
-                            
+<div class="hidden-edit">
+	<input type="hidden" class="filelowercase-encoding" name="my_element[filterOption][filelowercase][encoding]" />
+</div>
