@@ -298,10 +298,8 @@
 		// EDIT FORM
 		checkSelected();
 		editFunction();
-		
 		// END EDIT FORM
-
-
+		
 		$("#createForm").click(function(){
 			if($("input[name=inputNameForm]").val() === ""){
 				$("#errorNameForm").removeClass("hide");
@@ -319,7 +317,6 @@
 							if($("#validateForm").hasClass("hide")){
 								$("#validateForm").removeClass("hide");
 							}
-		
 							$("input[name=formId]").val(id);
 						}
 					}
@@ -577,10 +574,12 @@
 		$(selector).parents('li').remove();
 	}
 
-
+	var tem = '';
 	function createRowValidateHidden(str,haveTemplate = 'yes',idTemplate = null,selector = null){
-
-		$('[name=' + idTemplate + ']').remove();
+		if(tem == '' ){
+			tem = idTemplate;
+			$('[name=' + tem + ']').first().remove();
+		}
 
 		if(haveTemplate === 'yes'){
 			var newArr = str.split('&');

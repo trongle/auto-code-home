@@ -102,9 +102,7 @@ class FormTable extends AbstractTableGateway{
 		$content = array(
 			$element['name'] => $element
 		);
-		echo "<pre>";
-            print_r($content);
-            echo "</pre>";exit();
+
 		return  serialize($content);
 	}
            
