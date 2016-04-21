@@ -1,12 +1,12 @@
-<form id="alpha">	
+<form class="filter-alpha">	
 	
 	<div class="form-group col-md-6">
 		<label for="adapter">Locale:</label>
-		<input type="text" id="alpha-locale" name="my_element[filterOption][alpha][locale]" class="form-control" />
+		<input type="text" class="alpha-locale form-control" name="my_element[filterOption][alpha][locale]" />
 	</div>
 
 	<div class="form-group col-md-12">
-		Allow white space: <input type="checkbox" id="alpha-allow_white_space" name="my_element[filterOption][alpha][allow_white_space]"   />
+		Allow white space: <input type="checkbox" class="alpha-allow_white_space" name="my_element[filterOption][alpha][allow_white_space]"   />
 	</div>
 	
 	<div class="form-group col-md-12">	   

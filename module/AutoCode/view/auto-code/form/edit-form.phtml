@@ -1,10 +1,6 @@
 <?php $urlActionValidateForm = BASE_URL. $this->url('form/default',['action' => 'validate']) ?>
 <?php
 	$classHide = '';
-	echo "<pre>";
-	print_r($infoForm);
-	echo "</pre>";
-
 ?>
 <div class="container">
 	<!-- ADD NEW FORM -->
@@ -354,13 +350,13 @@
 			changeIdInput(nameElement);
 		<?php endforeach; ?>
 
-		<?php if(count(@$value['validate']) > 0 ): ?>
+		<?php if(count(@$value['validate']['name']) > 0 ): ?>
 			<?php foreach(@$value['validate']['name'] as $key => $val): ?>
 				HandleFormOption("<?php echo $val ?>",nameElement,"#validateList",'.showTemplateValidate','validate','edit');
 			<?php endforeach; ?>
 		<?php endif; ?>
 
-		<?php if(count(@$value['filter']) > 0 ): ?>
+		<?php if(count(@$value['filter']['name']) > 0 ): ?>
 			<?php foreach(@$value['filter']['name'] as $key => $val): ?>
 				HandleFormOption("<?php echo $val ?>",nameElement,"#filterList",'.showTemplateValidate','filter','edit');
 			<?php endforeach; ?>
@@ -370,33 +366,37 @@
 	
 	function bindValidateForm(){
 		<?php foreach($infoForm->content as $nameElement => $val): ?>
-			<?php foreach($val['validate']['option'] as $key => $value): ?>
-				<?php foreach($value as $key2 => $value2): ?>
-					<?php if($value2 == 'on'): ?>
-						$(".<?php echo $key ."-". $key2 ?>").attr("checked","checked");
-						$("#<?php echo $key ."-". $key2 ?>").attr("checked","checked");
-					<?php else: ?>
-						$(".<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
-						$("#<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
-					<?php endif; ?>
+			<?php if(count(@$val['validate']['option']) > 0): ?>
+				<?php foreach($val['validate']['option'] as $key => $value): ?>
+					<?php foreach($value as $key2 => $value2): ?>
+						<?php if($value2 == 'on'): ?>
+							$(".<?php echo $key ."-". $key2 ?>").attr("checked","checked");
+							$("#<?php echo $key ."-". $key2 ?>").attr("checked","checked");
+						<?php else: ?>
+							$(".<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
+							$("#<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
+						<?php endif; ?>
+					<?php endforeach; ?>
 				<?php endforeach; ?>
-			<?php endforeach; ?>
+			<?php endif; ?>
 		<?php endforeach; ?>
 	}
 
 	function bindFilterForm(){
 		<?php foreach($infoForm->content as $nameElement => $val): ?>
-			<?php foreach($val['filter']['option'] as $key => $value): ?>
-				<?php foreach($value as $key2 => $value2): ?>
-					<?php if($value2 == 'on'): ?>
-						$(".<?php echo $key ."-". $key2 ?>").attr("checked","checked");
-						$("#<?php echo $key ."-". $key2 ?>").attr("checked","checked");
-					<?php else: ?>
-						$(".<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
-						$("#<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
-					<?php endif; ?>
+			<?php if(count(@$val['filter']['option']) > 0): ?>
+				<?php foreach($val['filter']['option'] as $key => $value): ?>
+					<?php foreach($value as $key2 => $value2): ?>
+						<?php if($value2 == 'on'): ?>
+							$(".<?php echo $key ."-". $key2 ?>").attr("checked","checked");
+							$("#<?php echo $key ."-". $key2 ?>").attr("checked","checked");
+						<?php else: ?>
+							$(".<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
+							$("#<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
+						<?php endif; ?>
+					<?php endforeach; ?>
 				<?php endforeach; ?>
-			<?php endforeach; ?>
+			<?php endif; ?>
 		<?php endforeach; ?>
 	}
 
@@ -456,11 +456,11 @@
 
 							$(".accept").on('click',function(e){
 								var str = $(idTemplate).serialize();	
-						
+							
 								createSerializeString(self,str,idTemplate)		
 								hideValidateTemplate(this,self);
 
-								$(this).parent().parent().parent().find('div.hidden-edit:first').remove();
+								// $(this).parent().parent().parent().find('div.hidden-edit:first').remove();
 								self = null;
 
 								return false;	
@@ -514,8 +514,7 @@
 				formId : <?php echo $infoForm->id ?>
 			},	
 			success : function(data){
-				// window.location.href = 
-				console.log(data);
+				 window.location.href = "<?php echo $this->url("form") ?>"
 			}
 		})
 	}
@@ -583,16 +582,19 @@
 
 		if(haveTemplate === 'yes'){
 			var newArr = str.split('&');
-			var html = '<div name="' + idTemplate + '">'
+			// var html = '<div name="' + idTemplate + '">'
+			var html = ''
 			$.each(newArr,function(index,val){
-				val = val.replace(/%5B/g,'[');
-				val = val.replace(/%5D/g,']');
-				var option = val.split('=');
+				val         = val.replace(/%5B/g,'[');
+				val         = val.replace(/%5D/g,']');
+
+				// console.log(val)
+				var option  = val.split('=');
 				html += '<input class="" type="hidden" name="' + option[0] + '" value="' + option[1] + '" />';
 			})
-			html += '</div>';
-
-			$(selector).parent('li').append(html);
+			// html += '</div>';
+			$(selector).parent('li').find('.hidden-edit').html(html)
+			$(selector).parent('li').find('div[name='+ idTemplate +']').html(html);
 		}	
 	}
 
@@ -613,6 +615,7 @@
 						'<div class="showTemplateValidate col-md-12 hide" > </div>' + 
 						'<i class="hide"></i>' + 
 						'<input type="hidden" value="' + validateValue + '" name="' + nameElement + '[' + hiddenInputName + '][' + validateValue + ']"/>' + 
+						'<div name="#'+ validateValue.toLowerCase() +'"></div>' +
 					'</li>';
 		}else{
 			return 	'<li name="' + validateValue +'">' + 
@@ -621,6 +624,7 @@
 						validateBreakChain + 
 						'<div class="showTemplateValidate col-md-12 hide" > </div>'  +
 						'<input type="hidden" value="' + validateValue + '" name="' + nameElement + '[' + hiddenInputName + '][' + validateValue + ']"/>' +
+						'<div name="#'+ validateValue.toLowerCase() +'"></div>' +
 					'</li>';
 		}
 	}
@@ -641,6 +645,7 @@
 	}
 	
 	function showValidateTemplate(selector){
+		// selector = selector.replace("#","#filter-");
 		$(selector).parents('.showTemplateValidate').removeClass('hide').addClass("animated zoomIn");
 	}
 	
