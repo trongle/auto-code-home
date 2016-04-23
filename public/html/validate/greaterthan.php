@@ -5,7 +5,7 @@
 	</div>
 
 	<div class="form-group col-md-12">
-		Inclusive: <input type="checkbox" class="greaterthan-inclusive form-control" name="my_element[validateOption][greaterthan][inclusive]"/>
+		Inclusive: <input type="checkbox" class="greaterthan-inclusive" name="my_element[validateOption][greaterthan][inclusive]"/>
 	</div>
 	
 	<div class="form-group col-md-12">	   
