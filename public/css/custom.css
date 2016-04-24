@@ -194,30 +194,50 @@ ul{
 #lazyButtonSave,
 #lazyNameElement,
 #lazyAddNewElement,
+#lazyCloseAllElement,
 #lazyLabelAddNewElement{
 	position: fixed;
-	bottom: 0;
+	width: 70px;
 	right: 0; 	 
 	z-index: 100;
 	opacity: 0.5;
 	display: none;
-	 
+	border-radius: 0;
 }
 
-#lazyButtonSave:hover,
-#lazyAddNewElement:hover,
-#lazyLabelAddNewElement:hover{
-	opacity: 1;
+#lazyCloseAllElement{
+	display: block;
+}
+
+#lazyButtonSave{
+	bottom: 320px;
+}
+
+#lazyCloseAllElement{
+	bottom: 388px;
 }
 
 #lazyAddNewElement,
 #lazyLabelAddNewElement{
-	right: 60px;
+	bottom: 354px;
 }
 
 #lazyNameElement{
-	right : 120px;
+	bottom : 0;
+	margin-right: -60px;
+}
+
+#lazyButtonSave:hover,
+#lazyAddNewElement:hover,
+#lazyLabelAddNewElement:hover,
+#lazyCloseAllElement:hover{
+	opacity: 1;
+}
+
+#lazyNameElement{
+	right : 130px;
 	display: block;
+	bottom : 354px;
 	width : 135px;
 	border: rgba(0, 0, 255, 0.37) 1px solid;	
 }

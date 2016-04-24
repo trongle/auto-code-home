@@ -101,8 +101,9 @@ if(isset($infoForm)){
 					    	<button class="btn btn-primary" type="button" id="addNewElement">Add new element</button>
 					    	<button type="button" class="btn btn-success" onclick="submitValidateForm()" id="createElement">Save</button>
 					    	<!-- lazyButton -->
-					    	<button class="btn btn-primary" type="button" id="lazyLabelAddNewElement">Add new element</button>
+					    	<button class="btn btn-primary" type="button" id="lazyLabelAddNewElement">Add</button>
 					    	<button class="btn btn-primary" type="button" id="lazyAddNewElement">OK</button>
+					    	<button class="btn btn-primary" type="button" id="lazyCloseAllElement">Close All</button>
 					    	<input class="form-control hide" type="text"  id="lazyNameElement"/>
 					    	<button type="button" class="btn btn-success" onclick="submitValidateForm()" id="lazyButtonSave">Save</button>
 					    </div>
@@ -609,6 +610,7 @@ if(isset($infoForm)){
 		$(window).scroll(function() {
 			if ($(this).scrollTop() > offset) {
 				$("#lazyButtonSave").fadeIn(duration);
+
 				if(!$("#lazyLabelAddNewElement").hasClass("hide")){
 					$("#lazyLabelAddNewElement").fadeIn(duration);
 				}
@@ -635,14 +637,27 @@ if(isset($infoForm)){
 						$("#lazyNameElement").val("");
 					}
 				});	
-				
+
+				$("#lazyCloseAllElement").on("click",function(){
+						//show name Element when close form
+						var nameElementHidden = $(".openElement").prev().prev();
+						var nameElement       = $(".openElement").parent().next().find('.name-element').text();
+						$(".openElement").prev().prev().each(function(){
+							$(this).text($(this).parent().next().find('.name-element').text())
+						})
+
+						nameElementHidden.removeClass('hide');
+
+						$(".openElement").parent().next().slideUp();
+						$(".openElement").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+				})
+
 			} else {
 				$("#lazyButtonSave").fadeOut(duration);
 				$("#lazyLabelAddNewElement").fadeOut(100).removeClass("hide");
 				$("#lazyAddNewElement").fadeOut(duration);
 				$("#lazyNameElement").addClass("hide").val('');	 
-			}
-		 
+			}		 
 		});
 	}
 
