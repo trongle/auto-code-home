@@ -1,6 +1,3 @@
-<?php 
-echo "ASFsaklfjhasjfkhasjkfhsakjlfhslak";
-?>
 <div class="row box hide elementAttrs" >
 	<div class="wrapper-1">
 		<div class="col-md-12">
@@ -13,16 +10,71 @@ echo "ASFsaklfjhasjfkhasjkfhsakjlfhslak";
 				<h3 class="name-element">[...] Element</h3>
 				<input type="hidden" name="name" class="input-name-element-hidden">
 				<div class="row" style="margin-bottom: 30px;">
-					<div class="col-md-6 tab tabAttribute">
-						<h4>Attributes</h4>
+					<div class="col-md-12 tab tabAttribute">
+						<h4>Attributes &amp; Options</h4>
 					</div>
-					<div class="col-md-6 tab tabOption">
+				<!-- 	<div class="col-md-6 tab tabOption">
 						<h4>Options</h4>
-					</div>
+					</div> -->
 				</div>
-				<!-- ATTRIBUTES -->
+
+				
 
 				<div class="row attribute">
+					<!-- OPTIONS -->	
+					<div class="col-md-4">
+						<div class="form-group">					
+							<label for="id">Label name</label>
+							<input type="text"  name="nameLabel" class="form-control nameLabel"/>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="class">Label class</label>
+							<input type="text" name="classLabel" class="form-control classLabel"/>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="placeElement">For</label><br/>
+							<input type="text" id="forLabel" class="form-control forLabel"/>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="disableHtml">Html escape label</label><br/>
+							<?php $checked =  $infoElement['option']['disableHtml'] == 'on'? 'checked="checked"' : '' ?>
+							<input type="checkbox" class="form-control disableHtml" <?php echo $checked ?> name="requiredElement"/>
+						</div>
+					</div>
+
+					<div class="selectbox hide">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="emptyOption">Empty option</label><br/>
+								<input type="text" name="emptyOption" class="form-control emptyOption"/>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="valueOption">Value option</label><br/>
+								<input type="text" name="valueOption" placeholder="1,2,3,4" class="form-control valueOption"/>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="nameOption">Name option</label><br/>
+								<input type="text" name="nameOption" placeholder="name1,name2,name3,name4" class="form-control nameOption"/>
+							</div>
+						</div>
+					</div>
+					<!-- END OPTIONS -->
+					<!-- ATTRIBUTES -->
 					<div class="col-md-4">
 						<div class="form-group">					
 							<label for="type">Type</label>
@@ -92,62 +144,19 @@ echo "ASFsaklfjhasjfkhasjkfhsakjlfhslak";
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="attrElement">Attributes</label><br/>
-							<textarea class="form-control attrElement" name="attrElement" placeholder="attr1 : name1,attr2 : name2"  cols="30" rows="5"></textarea>
+							<textarea class="form-control attrElement" name="attrElement" placeholder="attr1 : name1,attr2 : name2"></textarea>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="placeElement">Option label</label><br/>
+							<textarea placeholder="op1:name1,op2:name2" class="form-control optionLabel"></textarea>
 						</div>
 					</div>
 
 				</div>
 				<!-- END ATTRIBUTES -->
-
-				<!-- OPTIONS -->
-				<div class="row hide option">
-					<div class="col-md-4">
-						<div class="form-group">					
-							<label for="id">Label name</label>
-							<input type="text"  name="nameLabel" class="form-control nameLabel"/>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="class">Label class</label>
-							<input type="text" name="classLabel" class="form-control classLabel"/>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="placeElement">For</label><br/>
-							<input type="text" id="forLabel" class="form-control forLabel"/>
-						</div>
-					</div>
-
-
-
-					<div class="selectbox hide">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="emptyOption">Empty option</label><br/>
-								<input type="text" name="emptyOption" class="form-control emptyOption"/>
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="valueOption">Value option</label><br/>
-								<input type="text" name="valueOption" placeholder="1,2,3,4" class="form-control valueOption"/>
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="nameOption">Name option</label><br/>
-								<input type="text" name="nameOption" placeholder="name1,name2,name3,name4" class="form-control nameOption"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- END OPTIONS -->
 				<hr />
 
 				<div class="row">

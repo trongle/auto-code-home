@@ -25,6 +25,8 @@ class IndexController extends AbstractActionController
     private $nameLabel;
     private $classLabel;
     private $forLabel;
+    private $disableHtml;
+    private $optionLabel;
     //select box
     private $emptyOption;
     private $valueOption;
@@ -96,7 +98,7 @@ class IndexController extends AbstractActionController
 
             $post        = $this->filterPost($this->request->getPost()); 
             $nameElement = str_replace(".wrapper-","",$post->selector); 
-            $post = $post->element[$nameElement];
+            $post        = $post->element[$nameElement];
 
             //
             $this->attribute          = $post['attribute'];
@@ -124,7 +126,7 @@ class IndexController extends AbstractActionController
 
                 if($this->checkOption() == true){
                     $code   .= $this->openOption() 
-                                . $this->nameLabel . $this->labelAttribute() . $this->createStringSelectBox($post)
+                                . $this->nameLabel . $this->labelAttributeString() . $this->createOptionLabelString() . $this->createSelectBoxString($post)
                             .$this->close();
                 }
 
@@ -138,7 +140,7 @@ class IndexController extends AbstractActionController
             $codeFilter = '';
             if(count($this->filterName) > 0 && !empty($this->filterName)){
                 $codeFilter = $this->openFilter()
-                                . $this->createStringFilter()
+                                . $this->createFilterString()
                             . $this->close();
             }
 
@@ -146,7 +148,7 @@ class IndexController extends AbstractActionController
             $codeValidate = '';
             if(count($this->validateName) > 0 && !empty($this->validateName)){
                 $codeValidate   .= $this->openValidate()
-                                    . $this->createStringValidate()
+                                    . $this->createValidateString()
                                 . $this->close() ;
             }
             
@@ -166,7 +168,7 @@ class IndexController extends AbstractActionController
             $parse_str       = '';
             parse_str($post['element'],$parse_str);
             $post['element'] = $parse_str;
-    
+
             unset($post->element['nameElement']);
             unset($post->element['validateElement']);
             unset($post->element['filterElement']);
@@ -183,7 +185,7 @@ class IndexController extends AbstractActionController
         return $this->setSpace() . '"filters" <span class="php-plain">=></span> <span class="php-keyword">array</span><span class="php-plain">(</span><br/>';
     }
 
-    private function createStringValidate(){
+    private function createValidateString(){
         $codeValidate = '';
         foreach($this->validateName as $validate){
             $codeValidate   .= $this->setSpace(2) . '<span class="php-keyword">array</span><span class="php-plain">(</span><br/>'
@@ -196,7 +198,7 @@ class IndexController extends AbstractActionController
         return $codeValidate;
     }
 
-    private function createStringfilter(){
+    private function createFilterString(){
         $codeFilter = '';
         foreach($this->filterName as $filter){
             $codeFilter   .= $this->setSpace(2) . '<span class="php-keyword">array</span><span class="php-plain">(</span><br/>'
@@ -269,7 +271,7 @@ class IndexController extends AbstractActionController
         return self::setSpace($level).'<span class="php-plain">),</span><br/>';
     }
     
-    private function labelAttribute(){
+    private function labelAttributeString(){
         if(!empty($this->classLabel) || !empty($this->forLabel)){
             return self::setSpace(2).'"label_attributes" <span class="php-plain">=></span> <span class="php-keyword">array</span><span class="php-plain">(</span><br/>' 
                                     . $this->classLabel . $this->forLabel
@@ -281,9 +283,6 @@ class IndexController extends AbstractActionController
 
     private function setValue($post = null){
         if(!empty($post)){
-            // echo "<pre>";
-            // print_r($post);
-            // echo "</pre>";exit();
             $this->type     = empty($post["type"])? '' :self::setSpace().'"type" <span class="php-plain">=></span> "'.$post["type"].'"<span class="php-plain">,</span><br/>';
             $this->name     = empty($post["name"])? '' :self::setSpace().'"name" <span class="php-plain">=></span> "'.$post['name'].'"<span class="php-plain">,</span><br/>';
             $this->required = empty($post['required'])? self::setSpace().'"required" <span class="php-plain">=></span> false,<br/>' :self::setSpace().'"required" <span class="php-plain">=></span> true,<br/>';
@@ -293,12 +292,14 @@ class IndexController extends AbstractActionController
             $this->id              = empty($this->attribute['id'])? '' : self::setSpace(2).'"id" <span class="php-plain">=></span> "' . $this->attribute['id'] . '"<span class="php-plain">,</span><br/>';
             $this->placeholder     = empty($this->attribute['placeholder'])? '' : self::setSpace(2).'"placeholder" <span class="php-plain">=></span> "' . $this->attribute['placeholder'] . '"<span class="php-plain">,</span><br/>';
             $this->value           = empty($this->attribute['value'])? '' : self::setSpace(2).'"value" <span class="php-plain">=></span> "' . $this->attribute['value'] . '"<span class="php-plain">,</span><br/>';
-            $this->otherAttributes = $this->setOtherAttributes();
+            $this->otherAttributes = $this->setArrayPair('attribute');
             
             //options
-            $this->nameLabel  = empty($this->option['nameLabel'])? '' : self::setSpace(2).'"label" <span class="php-plain">=></span> "' . $this->option['nameLabel'] . '"<span class="php-plain">,</span><br/>';
-            $this->classLabel = empty($this->option['classLabel'])? '' : self::setSpace(3).'"class" <span class="php-plain">=></span> "' . $this->option['classLabel'] . '"<span class="php-plain">,</span><br/>';
-            $this->forLabel   = empty($this->option['forLabel'])? '' : self::setSpace(3).'"for" <span class="php-plain">=></span> "' . $this->option['forLabel'] . '"<span class="php-plain">,</span><br/>';
+            $this->nameLabel    = empty($this->option['nameLabel'])? '' : self::setSpace(2).'"label" <span class="php-plain">=></span> "' . $this->option['nameLabel'] . '"<span class="php-plain">,</span><br/>';
+            $this->classLabel   = empty($this->option['classLabel'])? '' : self::setSpace(3).'"class" <span class="php-plain">=></span> "' . $this->option['classLabel'] . '"<span class="php-plain">,</span><br/>';
+            $this->forLabel     = empty($this->option['forLabel'])? '' : self::setSpace(3).'"for" <span class="php-plain">=></span> "' . $this->option['forLabel'] . '"<span class="php-plain">,</span><br/>';
+            $this->disableHtml  = empty($this->option['disableHtml'])? self::setSpace(3).'"disable_html_escape" <span class="php-plain">=></span> false,<br/>' : self::setSpace(3).'"disable_html_escape" <span class="php-plain">=></span> true,<br/>';
+            $this->optionLabel = $this->setArrayPair('optionLabel');
         }
     }
 
@@ -314,7 +315,7 @@ class IndexController extends AbstractActionController
         
     }
 
-    private function createStringSelectBox($post = null){
+    private function createSelectBoxString($post = null){
         $this->setValueSelectBox();
 
         $selectOption = null;
@@ -339,6 +340,16 @@ class IndexController extends AbstractActionController
         return $selectOption;
     }
 
+    private function createOptionLabelString($post = null){
+        if(!empty($this->disableHtml) || !empty($this->optionLabel)){
+            return self::setSpace(2).'"label_options" <span class="php-plain">=></span> <span class="php-keyword">array</span><span class="php-plain">(</span><br/>' 
+                                        . $this->disableHtml . $this->optionLabel
+                                    . self::setSpace(2).'<span class="php-plain">),</span><br/>';
+        }else{
+            return null;
+        }
+    }
+
     private  function openCode($tag = '<code>'){
         return $tag . '<span class="php-variable">$this</span><span class="php-plain">->add</span><span class="php-plain">(</span><span class="php-keyword">array</span><span class="php-plain">(</span><br/>' ;
     }
@@ -347,20 +358,32 @@ class IndexController extends AbstractActionController
         return '<span class="php-plain">));</span>' . $closeTag . '<br/>';
     }
 
-    private function setOtherAttributes(){
+    private function setArrayPair($type = null){
         $xhtml    = '';
         
-        if(!empty($this->attribute['attr'])){
-            $attrs = explode(',', $this->attribute['attr']);
-                
-            foreach($attrs as $attr){
-                $attr  = trim($attr);
-                $attr  = explode(':',$attr);
-                $xhtml .=  self::setSpace(2).'"' . @$attr[0] . '" <span class="php-plain">=></span> "' . @$attr[1] . '"<span class="php-plain">,</span><br/>';
+        if(!empty($type)){
+            if(!empty($this->attribute['attr']) && $type == "attribute"){
+                $attrs = explode(',', $this->attribute['attr']);
+                    
+                foreach($attrs as $attr){
+                    $attr  = trim($attr);
+                    $attr  = explode(':',$attr);
+                    $xhtml .=  self::setSpace(2).'"' . @$attr[0] . '" <span class="php-plain">=></span> "' . @$attr[1] . '"<span class="php-plain">,</span><br/>';
+                }
+                return $xhtml;
+            }
+
+            if(!empty($this->option['optionLabel']) && $type == 'optionLabel'){
+                $attrs = explode(',', $this->option['optionLabel']);
+                    
+                foreach($attrs as $attr){
+                    $attr  = trim($attr);
+                    $attr  = explode(':',$attr);
+                    $xhtml .=  self::setSpace(3).'"' . @$attr[0] . '" <span class="php-plain">=></span> "' . @$attr[1] . '"<span class="php-plain">,</span><br/>';
+                }
+                return $xhtml;
             }
         }
-
-        return $xhtml;
     }
 
     private function checkAttribute(){

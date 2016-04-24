@@ -187,8 +187,9 @@ ul{
 	color:#64DDBB; 
 }
 
-.requiredElement{
+.requiredElement,.disableHtml{
 	box-shadow: none !important;
+	margin:0 !important;
 }
 
 #lazyButtonSave,

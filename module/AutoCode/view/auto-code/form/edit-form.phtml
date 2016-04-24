@@ -449,14 +449,14 @@ if(isset($infoForm)){
 
 	function openTab(selector = null){
 		
-		$(selector + " .tabAttribute").click(function(){
-			$(selector).find(".attribute").removeClass('hide');
-			$(selector).find(".option").addClass('hide');
-		})
-		$(selector + " .tabOption").click(function(){
-			$(selector).find(".option").removeClass('hide');
-			$(selector).find(".attribute").addClass('hide');
-		})
+		// $(selector + " .tabAttribute").click(function(){
+		// 	$(selector).find(".attribute").removeClass('hide');
+		// 	$(selector).find(".option").addClass('hide');
+		// })
+		// $(selector + " .tabOption").click(function(){
+		// 	$(selector).find(".option").removeClass('hide');
+		// 	$(selector).find(".attribute").addClass('hide');
+		// })
 
 		$(selector + " .tabValidate").click(function(){
 			$(selector).find(".validateArea").removeClass('hide');
@@ -580,6 +580,8 @@ if(isset($infoForm)){
 		$(selector + " .nameLabel").attr('name',nameElement  + "[option][nameLabel]");
 		$(selector + " .classLabel").attr('name',nameElement  + "[option][classLabel]");
 		$(selector + " .forLabel").attr('name',nameElement  + "[option][forLabel]");
+		$(selector + " .optionLabel").attr('name',nameElement  + "[option][optionLabel]");
+		$(selector + " .disableHtml").attr('name',nameElement  + "[option][disableHtml]");
 		$(selector + " .emptyOption").attr('name',nameElement  + "[option][emptyOption]");
 		$(selector + " .valueOption").attr('name',nameElement  + "[option][valueOption]");
 		$(selector + " .nameOption").attr('name',nameElement  + "[option][nameOption]");
