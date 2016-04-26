@@ -11,6 +11,7 @@ class IndexController extends AbstractActionController
     private $type;
     private $name;
     private $required;
+
 //attribute
     private $attribute;
     private $class;
@@ -91,9 +92,9 @@ class IndexController extends AbstractActionController
         }else{
             echo "not permission";
         }   
-    }
+    } 
 
-    public function validateAction(){
+    public function createCodeAction(){
         if($this->request->isXmlHttpRequest()){
 
             $post        = $this->filterPost($this->request->getPost()); 
@@ -116,7 +117,117 @@ class IndexController extends AbstractActionController
             $this->setValue($post);          
             
             // Create input code 
-            $code = $this->openCode() . $this->name . $this->type . $this->required ;
+            echo $code = $this->createInputCode($post);
+
+            echo '<div class="hide">superman</div>';
+
+            // Create filter and Validate code         
+            
+            echo $codeFilterAndValidate = $this->openCode() . $this->name
+                                                .$this->createFilterCode() . $this->createValidateCode()
+                                        . $this->closeCode() ;  
+
+            return $this->response;
+        }else{
+            $authenticate = $this->getServiceLocator()->get('MyAuth');
+            $auth         = $authenticate->_authen;
+
+            if($auth->hasIdentity()){
+                $id            = $this->params()->fromRoute("id");
+                $formTable     = $this->getServiceLocator()->get("FormTable");
+
+                $infoForm          = $formTable->getItemById($id);
+                $infoForm->content = unserialize($infoForm->content);
+
+                $codeInput             = '';
+                $codeValidateAndFilter = '';
+                foreach($infoForm->content as $nameElement => $infoElement){
+                    //
+                    $this->attribute          = $infoElement['attribute'];
+                    $this->option             = $infoElement['option'];
+
+                    //validate
+                    $this->validateName       = isset($infoElement['validate']['name'])? $infoElement['validate']['name'] : '';
+                    $this->validateOption     = isset($infoElement['validate']['option'])? $infoElement['validate']['option'] : '';
+                    $this->validateBreakChain = isset($infoElement['validate']['breakchain'])? $infoElement['validate']['breakchain'] : '';
+                    
+                    //filter
+                    $this->filterName       = isset($infoElement['filter']['name'])? $infoElement['filter']['name'] : '';
+                    $this->filterOption     = isset($infoElement['filter']['option'])? $infoElement['filter']['option'] : '';
+
+                    $this->setValue($infoElement);
+
+                    $codeInput             .= $this->createCommentString($nameElement,'','') . $this->createInputCode($infoElement,'','');
+                    if( !empty($this->createFilterCode()) || !empty($this->createValidateCode()) ){     
+                        $codeValidateAndFilter .= $this->createCommentString($nameElement,'','') . $this->openCode('') . $this->name . $this->createFilterCode() . $this->createValidateCode() . $this->closeCode('');
+                    }
+                }
+
+                $viewModel = new ViewModel();
+
+                $viewModel->setVariables(array(
+                    "infoForm"              => $infoForm,
+                    'codeInput'             => $this->createAttributeFormString($infoForm->attribute) . $codeInput,
+                    'codeValidateAndFilter' => $codeValidateAndFilter,
+                ));
+
+                return $viewModel;
+                
+            }else{
+                $this->redirect()->toRoute("home");
+            }
+        }
+                       
+    }
+    
+    private function createAttributeFormString($attributeForm = null){
+        $code = '';
+        
+        if(!empty($attributeForm)){
+            $attributeForm = unserialize($attributeForm);
+   
+            $code   = '<span class="php-variable">$this</span><span class="php-plain">->setAttributes</span><span class="php-plain">(</span><span class="php-keyword">array</span><span class="php-plain">(</span><br/>';
+            $code   .=  empty($attributeForm['id'])?         '' : self::setSpace(1).'"id" <span class="php-plain">=></span> "' . $attributeForm['id'] . '"<span class="php-plain">,</span><br/>';
+            $code   .=  empty($attributeForm['class'])?      '' : self::setSpace(1).'"class" <span class="php-plain">=></span> "' . $attributeForm['class'] . '"<span class="php-plain">,</span><br/>';
+            $code   .=  empty($attributeForm['method'])?     '' : self::setSpace(1).'"method" <span class="php-plain">=></span> "' . $attributeForm['method'] . '"<span class="php-plain">,</span><br/>';
+            $code   .=  $attributeForm['entype'] == 'empty'? '' : self::setSpace(1).'"entype" <span class="php-plain">=></span> "' . $attributeForm['entype'] . '"<span class="php-plain">,</span><br/>';
+            $code   .=  empty($attributeForm['action'])?     '' : self::setSpace(1).'"action" <span class="php-plain">=></span> "' . $attributeForm['action'] . '"<span class="php-plain">,</span><br/>';
+            $code   .= '<span class="php-plain">));</span>';
+        }
+
+        return $code;
+    }
+
+    private function createCommentString($nameInput = null, $tagOpen = "<code>" , $tagClose = "</code>"){
+        return "<br/><br/>" . $tagOpen . "<span class='php-comment'>//" . $nameInput . "</span>" . $tagClose . "<br/>";
+    }
+
+    private function createValidateCode(){
+        $codeValidate = '';
+
+        if(count($this->validateName) > 0 && !empty($this->validateName)){
+            $codeValidate   .= $this->openValidate()
+                                . $this->createValidateString()
+                            . $this->close() ;
+        }
+
+        return $codeValidate;
+    }
+
+    private function createFilterCode(){
+        $codeFilter = '';
+
+        if(count($this->filterName) > 0 && !empty($this->filterName)){
+            $codeFilter = $this->openFilter()
+                            . $this->createFilterString()
+                        . $this->close();
+        }
+
+        return $codeFilter;
+    }
+
+    private function createInputCode($post = null,$openTag = "<code>",$closeTag = "</code>"){
+        $code = $this->openCode($openTag) . $this->name . $this->type . $this->required ;
 
                 if($this->checkAttribute() == true){
                     $code   .= $this->openAttribute()
@@ -130,37 +241,9 @@ class IndexController extends AbstractActionController
                             .$this->close();
                 }
 
-            $code .= $this->closeCode();
+        $code .= $this->closeCode($closeTag);
 
-            echo $code;
-
-            echo '<div class="hide">superman</div>';
-
-            // Create filter code 
-            $codeFilter = '';
-            if(count($this->filterName) > 0 && !empty($this->filterName)){
-                $codeFilter = $this->openFilter()
-                                . $this->createFilterString()
-                            . $this->close();
-            }
-
-            // Create validate code 
-            $codeValidate = '';
-            if(count($this->validateName) > 0 && !empty($this->validateName)){
-                $codeValidate   .= $this->openValidate()
-                                    . $this->createValidateString()
-                                . $this->close() ;
-            }
-            
-            $codeFilterAndValidate  = $this->openCode() . $this->name
-                                        .$codeFilter . $codeValidate
-                                    . $this->closeCode() ;  
-
-            echo $codeFilterAndValidate;
-
-            return $this->response;
-        }
-                       
+        return $code;
     }
 
     private function filterPost($post = null){

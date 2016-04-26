@@ -1,7 +1,6 @@
 <?php 
 namespace AutoCode\Form;
 
-use Adminuser\Form\FormUserFilter;
 use Zend\Form\Form;
 
 class FormUser extends Form{
@@ -159,21 +158,21 @@ class FormUser extends Form{
 	}
 
 	private function convertToPrettyName($fieldName) {
-             switch($fieldName){
-                case "inputName" :
-                    return "Name";
-                    break;
-                case "inputEmail":
-                    return "Email";
-                    break;
-                case "inputPassword":
-                    return "password";
-                    break;
-                case "inputRepassword":
-                    return "re-password";
-                    break;
-            }
+         switch($fieldName){
+            case "inputName" :
+                return "Name";
+                break;
+            case "inputEmail":
+                return "Email";
+                break;
+            case "inputPassword":
+                return "password";
+                break;
+            case "inputRepassword":
+                return "re-password";
+                break;
         }
+    }
 	
 }
 ?>

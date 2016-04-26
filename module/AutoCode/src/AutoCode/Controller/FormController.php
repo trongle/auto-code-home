@@ -87,14 +87,11 @@ class FormController extends AbstractActionController
 				'userInfo'        => $userInfo
 			));
 
-			// $viewModel->setTemplate("auto-code/index/index.phtml");
-
 			return $viewModel;
 			
 		}else{
 			$this->redirect()->toRoute("home");
 		}
-
 	}
 }
 ?>

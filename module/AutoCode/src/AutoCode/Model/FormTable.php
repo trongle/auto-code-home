@@ -93,7 +93,7 @@ class FormTable extends AbstractTableGateway{
         }
 
         if($options['type'] == 'addElement'){
-    
+
         	$attribute['id']     = $data[0]['idForm'];
 			$attribute['class']  = $data[0]['classForm'];
 			$attribute['method'] = $data[0]['methodForm'];

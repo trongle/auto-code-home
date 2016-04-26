@@ -9,7 +9,7 @@
 			<div class="wrap">
 				<div class="col-md-6">
 					<h3 class="name-element">[...] Element</h3>
-					<input type="hidden" name="name" value="<?php echo $infoElement->name ?>" class="input-name-element-hidden">
+					<input type="hidden" name="name" value="<?php echo @$infoElement->name ?>" class="input-name-element-hidden">
 					<div class="row" style="margin-bottom: 30px;">
 						<div class="col-md-12 tab tabAttribute">
 							<h4>Attributes &amp; Options</h4>
@@ -24,28 +24,28 @@
 						<div class="col-md-4">
 							<div class="form-group">					
 								<label for="id">Label name</label>
-								<input type="text" value="<?php echo $infoElement['option']['nameLabel'] ?>"  name="nameLabel" class="form-control nameLabel"/>
+								<input type="text" value="<?php echo @$infoElement['option']['nameLabel'] ?>"  name="nameLabel" class="form-control nameLabel"/>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="class">Label class</label>
-								<input type="text" value="<?php echo $infoElement['option']['classLabel'] ?>" name="classLabel" class="form-control classLabel"/>
+								<input type="text" value="<?php echo @$infoElement['option']['classLabel'] ?>" name="classLabel" class="form-control classLabel"/>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="placeElement">For</label><br/>
-								<input type="text" value="<?php echo $infoElement['option']['forLabel'] ?>" id="forLabel" class="form-control forLabel"/>
+								<input type="text" value="<?php echo @$infoElement['option']['forLabel'] ?>" id="forLabel" class="form-control forLabel"/>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="disableHtml">Html escape label</label><br/>
-								<?php $checked =  $infoElement['option']['disableHtml'] == 'on'? 'checked="checked"' : '' ?>
+								<?php $checked =  @$infoElement['option']['disableHtml'] == 'on'? 'checked="checked"' : '' ?>
 								<input type="checkbox" class="form-control disableHtml" <?php echo $checked ?> name="requiredElement"/>
 							</div>
 						</div>
@@ -54,21 +54,21 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="emptyOption">Empty option</label><br/>
-									<input type="text" value="<?php echo $infoElement['option']['emptyOption'] ?>" name="emptyOption" class="form-control emptyOption"/>
+									<input type="text" value="<?php echo @$infoElement['option']['emptyOption'] ?>" name="emptyOption" class="form-control emptyOption"/>
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="valueOption">Value option</label><br/>
-									<input type="text" name="valueOption" value="<?php echo $infoElement['option']['valueOption'] ?>" placeholder="1,2,3,4" class="form-control valueOption"/>
+									<input type="text" name="valueOption" value="<?php echo @$infoElement['option']['valueOption'] ?>" placeholder="1,2,3,4" class="form-control valueOption"/>
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="nameOption">Name option</label><br/>
-									<input type="text" name="nameOption" value="<?php echo $infoElement['option']['nameOption'] ?>" placeholder="name1,nam2,name3,name4" class="form-control nameOption"/>
+									<input type="text" name="nameOption" value="<?php echo @$infoElement['option']['nameOption'] ?>" placeholder="name1,nam2,name3,name4" class="form-control nameOption"/>
 								</div>
 							</div>
 						</div>
@@ -109,35 +109,35 @@
 						<div class="col-md-4">
 							<div class="form-group">					
 								<label for="id">ID</label>
-								<input type="text" value="<?php echo $infoElement['attribute']['id'] ?>"  name="idElement" class="form-control idElement"/>
+								<input type="text" value="<?php echo @$infoElement['attribute']['id'] ?>"  name="idElement" class="form-control idElement"/>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="class">Class</label>
-								<input type="text" value="<?php echo $infoElement['attribute']['class'] ?>" name="classElement" class="form-control classElement"/>
+								<input type="text" value="<?php echo @$infoElement['attribute']['class'] ?>" name="classElement" class="form-control classElement"/>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="placeElement">Placeholder</label><br/>
-								<input type="text" value="<?php echo $infoElement['attribute']['placeholder'] ?>" name="placeElement" class="form-control placeElement"/>
+								<input type="text" value="<?php echo @$infoElement['attribute']['placeholder'] ?>" name="placeElement" class="form-control placeElement"/>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="valueElement">Value</label><br/>
-								<input type="text" name="valueElement" value="<?php echo $infoElement['attribute']['value'] ?>" class="form-control valueElement"/>
+								<input type="text" name="valueElement" value="<?php echo @$infoElement['attribute']['value'] ?>" class="form-control valueElement"/>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="requiredElement">Required</label><br/>
-								<?php $checked =  $infoElement['required'] == 'on'? 'checked="checked"' : '' ?>
+								<?php $checked =  @$infoElement['required'] == 'on'? 'checked="checked"' : '' ?>
 								<input type="checkbox" class="form-control requiredElement" <?php echo $checked ?> name="requiredElement"/>
 							</div>
 						</div>
@@ -145,14 +145,14 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="attrElement">Attributes</label><br/>
-								<textarea class="form-control attrElement" name="attrElement" placeholder="attr1 : name1,attr2 : name2" ><?php echo $infoElement['attribute']['attr'] ?></textarea>
+								<textarea class="form-control attrElement" name="attrElement" placeholder="attr1 : name1,attr2 : name2" ><?php echo @$infoElement['attribute']['attr'] ?></textarea>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="placeElement">Option label</label><br/>
-								<textarea placeholder="op1:name1,op2:name2" class="form-control optionLabel"><?php echo $infoElement['option']['optionLabel'] ?></textarea>
+								<textarea placeholder="op1:name1,op2:name2" class="form-control optionLabel"><?php echo @$infoElement['option']['optionLabel'] ?></textarea>
 							</div>
 						</div>
 						<!-- END ATTRIBUTES -->			 
