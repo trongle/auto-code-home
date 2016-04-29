@@ -84,6 +84,10 @@ i{
 	color: #b9bdb6 !important;
 }
 
+.php-comment{
+	color: #878a85 !important;
+}
+
 code{
 	color:#5ce638 !important;
 	background: black !important;
@@ -241,4 +245,14 @@ ul{
 	bottom : 354px;
 	width : 135px;
 	border: rgba(0, 0, 255, 0.37) 1px solid;	
+}
+
+.input-small{
+	width:90% !important;
+	display: inline-block !important;
+}
+
+.messageError{
+	height: 200px;
+	overflow-y: scroll;
 }

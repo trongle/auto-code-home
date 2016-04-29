@@ -38,6 +38,7 @@ class FormController extends AbstractActionController
     public function removeAction(){
         $id      = $this->params()->fromRoute('id');
         $message = '';
+        
         if(!empty($id)){
             $formTable = $this->getServiceLocator()->get("FormTable");
             if($formTable->removeItem($id)){
@@ -57,7 +58,7 @@ class FormController extends AbstractActionController
 				"element" => $this->request->getPost('element'), 
 				"formId"  => $this->request->getPost('formId')
 			);
-         
+     
 			$formTable = $this->getServiceLocator()->get("FormTable");
 			$formTable->updateForm($data,['type' => 'addElement']);
 

@@ -11,19 +11,30 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $form = $this->getServiceLocator()->get('FormElementManager')->get("formContactDemo");
-        
-        if($this->request->isPost()){
-        	$form->setData($this->request->getPost());
+        $form = $this->getServiceLocator()->get('FormElementManager')->get("FormContact");
 
-		    if($form->isValid()){
-		        $data = $form->getData();
-		    }
-        }
-	    
+	    if($this->request->isPost()){
+	       	$form->setData($this->request->getPost());
+	        if($form->isValid()){
+	            $data = $form->getData();
+	        }
+	    }
 
 	    return new ViewModel([
-			"form" => $form
-		]);
-    }   
+	          "form" => $form
+	    ]);
+    }  
+
+    public function form01Action(){
+    	$form = $this->getServiceLocator()->get('FormElementManager')->get("form01");
+	    if($this->request->isPost()){
+	        $form->setData($this->request->getPost());
+	        if($form->isValid()){
+	            $data = $form->getData();
+	        }
+	    }
+	    return new ViewModel([
+	        "form" => $form
+	    ]);
+    } 
 }

@@ -10,6 +10,7 @@ class FormContact extends Form{
 
           $this->setAttributes(array(
                "method" => "post",
+               "autocomplete" => "on"
           ));
 
           //username
@@ -20,16 +21,16 @@ class FormContact extends Form{
                "attributes" => array(
                     "id" => "username",
                     "placeholder" => "Hi friend, how may I call you ?",
-                    "name" => "username",
                ),
                "options" => array(
-                    "label" => "Name *",
+                    "label" => " Name <span class='required'>*</span>",
                     "label_attributes" => array(
                          "class" => "iconic user",
                          "for" => "username",
                     ),
                     "label_options" => array(
                          "disable_html_escape" => true,
+                         "name" => "username",
                     ),
                ),
           ));
@@ -43,16 +44,16 @@ class FormContact extends Form{
                "attributes" => array(
                     "id" => "usermail",
                     "placeholder" => "I promise I hate spam as much as you do",
-                    "name" => "usermail",
                ),
                "options" => array(
-                    "label" => "E-mail address *",
+                    "label" => "E-mail address <span class='required'>*</span>",
                     "label_attributes" => array(
                          "class" => "iconic mail-alt",
                          "for" => "usermail",
                     ),
                     "label_options" => array(
                          "disable_html_escape" => true,
+                         "name" => "usermail",
                     ),
                ),
           ));
@@ -61,21 +62,21 @@ class FormContact extends Form{
           //usersite
           $this->add(array(
                "name" => "usersite",
-               "type" => "url",
+               "type" => "text",
                "required" => true,
                "attributes" => array(
                     "id" => "usersite",
                     "placeholder" => "eg: http://www.htmldrive.net",
-                    "name" => "usersite",
                ),
                "options" => array(
-                    "label" => "Website",
+                    "label" => "Name <span class='required'>*</span>",
                     "label_attributes" => array(
                          "class" => "iconic link",
                          "for" => "usersite",
                     ),
                     "label_options" => array(
                          "disable_html_escape" => true,
+                         "name" => "usersite",
                     ),
                ),
           ));
@@ -89,7 +90,6 @@ class FormContact extends Form{
                "attributes" => array(
                     "id" => "subject",
                     "placeholder" => "What would you like to talk about?",
-                    "name" => "subject",
                ),
                "options" => array(
                     "label" => "Subject",
@@ -99,21 +99,22 @@ class FormContact extends Form{
                     ),
                     "label_options" => array(
                          "disable_html_escape" => true,
+                         "name" => "subject",
                     ),
                ),
           ));
 
 
-          //Message
+          //message
           $this->add(array(
-               "name" => "Message",
-               "type" => "text",
+               "name" => "message",
+               "type" => "textarea",
                "required" => true,
                "attributes" => array(
-                    "placeholder" => "Don't be shy, live me a friendly message and I'll answer as soon as possible",
+                    "placeholder" => "Don't be shy, live me a friendly message and I'll answer as soon as possible ",
                ),
                "options" => array(
-                    "label" => "Message *",
+                    "label" => "Message <span class='required'>*</span>",
                     "label_attributes" => array(
                          "class" => "iconic comment",
                          "for" => "message",
@@ -129,9 +130,9 @@ class FormContact extends Form{
           $this->add(array(
                "name" => "submit",
                "type" => "submit",
-               "required" => false,
+               "required" => true,
                "attributes" => array(
-                    "value" => " ★ Send the mail !",
+                    "value" => "★ Send the mail !",
                ),
           ));
      }
@@ -153,19 +154,19 @@ class FormContact extends Form{
      private function convertToPrettyName($fieldName){
           switch($fieldName){
                case "username" :
-                    return "Name *";
+                    return " Name *";
                     break;
                case "usermail" :
                     return "E-mail address *";
                     break;
                case "usersite" :
-                    return "Website";
+                    return "Name *";
                     break;
                case "subject" :
                     return "Subject";
                     break;
-               case "Message" :
-                    return "Message *";
+               case "message" :
+                    return "*";
                     break;
                case "submit" :
                     return "";

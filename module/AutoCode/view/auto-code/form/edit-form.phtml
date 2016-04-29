@@ -1,12 +1,14 @@
 <?php $urlActionValidateForm = BASE_URL. $this->url('code/default',['action' => 'createCode']) ?>
+<?php  
+// echo "<pre>";
+// print_r($infoForm);
+// echo "</pre>";
+?>
 <?php 
 $hide     = "hide";
 $flagEdit = false;
 // ============= Edit Area ================
 if(isset($infoForm)){
-	// echo "<pre>";
-	// print_r($infoForm);
-	// echo "</pre>";
 	$attributeForm = unserialize($infoForm->attribute);	
 	$flagEdit      = true;
 	$hide          = '';
@@ -119,7 +121,7 @@ if(isset($infoForm)){
 		</div>
 		<!-- END ADD NEW ELEMENT -->
 		<?php 
-			if($infoForm->status == 'active'){
+			if(@$infoForm->status == 'active'){
 				echo $this->partial("auto-code/form/view_edit.phtml", array('infoForm' => @$infoForm, 'validateElement' => $validateElement, 'filterElement' => $filterElement));	
 			}else{
 				echo $this->partial("auto-code/form/view_not_edit.phtml", array('validateElement' => $validateElement, 'filterElement' => $filterElement));
@@ -129,7 +131,7 @@ if(isset($infoForm)){
 	</form>
 	<input type="hidden" name="formIdHidden" />
 </div>
-<?php $url = $this->url('code/default',array('action' => 'loadTemplate')) ?>
+<?php $url = $this->url('code/default',array('action' => 'loadTemplate')) ?> 
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -144,21 +146,43 @@ if(isset($infoForm)){
 				var nameElement = "<?php echo $nameElement ?>";
 				var selector    = '.wrapper-' + nameElement;
 
-				if(flagName === '') flagName = nameElement; // get name of first form for clone purpose
+				if(flagName === ''){
+					flagName = nameElement; // get name of first form for clone purpose	
+				}
+
 				// add nameElement to span hidden
 				$(selector + " >  div:first > span:first").text("[" + nameElement + "] Element");
 				//show all form when page loaded
 				$(".elementAttrs").removeClass("hide");
 
+				// VALIDATE HANDLE
 				<?php if(count(@$infoElement['validate']['name']) > 0 ): ?>
 					<?php foreach(@$infoElement['validate']['name'] as $nameValidate): ?>
-						HandleFormOption("<?php echo $nameValidate ?>",nameElement,'.showTemplateValidate','validate','edit');
+						<?php  
+							$validateOptionMessage = array();
+
+							if(!empty($infoElement['validate']['option'])){
+								if(array_key_exists(strtolower($nameValidate),@$infoElement['validate']['option'])){
+									$validateOptionMessage['optionMessage'][$nameValidate]['option'] = @$infoElement['validate']['option'][strtolower($nameValidate)];
+								}
+							}
+
+							if(!empty($infoElement['validate']['message'])){
+								if(array_key_exists(strtolower($nameValidate),@$infoElement['validate']['message'])){
+									$validateOptionMessage['optionMessage'][$nameValidate]['message'] = @$infoElement['validate']['message'][strtolower($nameValidate)];
+								}
+							}						
+						?>
+						HandleFormOption("<?php echo $nameValidate ?>",nameElement,'.showTemplateValidate','validate','edit',<?php echo json_encode($validateOptionMessage) ?>);
 					<?php endforeach; ?>
 				<?php endif; ?>
 
+				// FILTER HANDLE
 				<?php if(count(@$infoElement['filter']['name']) > 0 ): ?>
 					<?php foreach(@$infoElement['filter']['name'] as $nameFilter): ?>
-						HandleFormOption("<?php echo $nameFilter ?>",nameElement,'.showTemplateValidate','filter','edit');
+						<?php if(array_key_exists(strtolower($nameFilter),@$infoElement['filter']['option'])): ?>
+							HandleFormOption("<?php echo $nameFilter ?>",nameElement,'.showTemplateValidate','filter','edit',<?php echo json_encode(array($nameFilter => $infoElement['filter']['option'][strtolower($nameFilter)])) ?>);
+						<?php endif; ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 
@@ -168,12 +192,18 @@ if(isset($infoForm)){
 		<?php endif; ?>
 		//=============================================================================//
 
-		//============================ ADD and DRAF=====================================
+		//**************************** ADD AND DRAF************************************//
+		//========================== First Element =====================================
 		$("#addNewElement").on("click",function(){
 			if(flagName === ''){
 				flagName = $("#nameElement").val();
+			}else{
+				//Set lại flagName nếu phần tử đầu tiên bị xóa
+				if(!$(".elementAttrs:first").hasClass("wrapper-"+flagName)){
+					flagName = $(".elementAttrs:first").find(".input-name-element-hidden").val(); 
+				}
 			}
-
+		
 			if(firstTime === false){ //============= first click :  show form ==============
 				firstTime         = true;			
 				var nameElement   = flagName;			
@@ -189,6 +219,7 @@ if(isset($infoForm)){
 
 				allMainAction(firstSelector,nameElement);
 		//==================================================================================
+
 		//========================== Not First Element =====================================
 			}else{
 				var nameElementNotFirst = $("#nameElement").val();
@@ -200,7 +231,7 @@ if(isset($infoForm)){
 																			.appendTo('#validateForm');
 				// change class wrapper with name of element
 				$(".wrapper-" + flagName).not(":first").attr('class',"wrapper-" + nameElementNotFirst);
-				// add nameElement ro span hidden
+				// add nameElement to span hidden
 				$(notFirstSelector + " >  div:first > span:first").text("[" + nameElementNotFirst + "] Element");
 				
 				allMainAction(notFirstSelector,nameElementNotFirst);
@@ -247,11 +278,12 @@ if(isset($infoForm)){
 				'methodForm' : $("select[name=formMethod]").val(),
 				'entypeForm' : $("select[name=formEntype]").val(),
 				'otherForm'  : $("input[name=formOther]").val(),
-				'element'    : $("#validateForm").serialize(),
+				'element'    : decodeURI($("#validateForm").serialize()),
 				'formId'     : id
 			},	
 			success : function(data){
-				 window.location.href = "<?php echo $this->url("form") ?>"
+				// console.log(data);
+				window.location.href = "<?php echo $this->url("form") ?>"
 			}
 		})
 	}
@@ -308,7 +340,7 @@ if(isset($infoForm)){
 	function checkSelected(selector){
 		var nameInput = selector.replace(".wrapper-","");
 
-		// get selected value (thu vi) 
+		// get selected value 
 	
 		<?php if(isset($infoForm) && $infoForm->content != ''): ?>
 			<?php foreach(@$infoForm->content as $nameElement => $infoElement): ?>
@@ -330,10 +362,14 @@ if(isset($infoForm)){
 	}
 
 	function removeElement(selector){
-		if(window.confirm("Are you sure for remove this element ? ")) $(selector).parents(".elementAttrs:first").remove();	
+		if(window.confirm("Are you sure for remove this element ? ")){
+			// flagName = $(selector).parents(".elementAttrs").next().find(".input-name-element-hidden").val();
+			// console.log(flagName);
+			$(selector).parents(".elementAttrs:first").remove();	
+		}
 	}
 
-	function HandleFormOption(selectorMain,nameElement,selectorTemplate,type,typeHandle = 'add'){
+	function HandleFormOption(selectorMain,nameElement,selectorTemplate,type,typeHandle = 'add',$infoValidateFilter = ''){
 			if(typeHandle === 'add'){// handle for ADD
 				if(type === 'validate'){
 					var validateValue = $(selectorMain + " [name=validateElement] option:selected").val();
@@ -343,8 +379,10 @@ if(isset($infoForm)){
 					var validateName  = $(selectorMain + " [name=filterElement] option:selected").text();
 				}
 			}else{// handle for EDIT
-				if(selectorMain === 'Alpha') selectorMain = "Filter-Alpha";
-				if(selectorMain === 'Alnum') selectorMain = "Filter-Alnum";
+				if(type === 'filter'){
+					if(selectorMain === 'Alpha') selectorMain = "Filter-Alpha";
+					if(selectorMain === 'Alnum') selectorMain = "Filter-Alnum";
+				}
 				validateValue = selectorMain;
 				validateName  = selectorMain;
 				selectorMain  = ".wrapper-" + nameElement;
@@ -372,8 +410,11 @@ if(isset($infoForm)){
 						$(selectorMain + " li[name=" + validateValue + "] "+selectorTemplate).append(templateFormated);
 
 						if(typeHandle === 'edit'){
-							bindValidateForm(selectorMain);
-							bindFilterForm(selectorMain);
+							if(type === 'validate'){
+								bindValidateForm(selectorMain,$infoValidateFilter);
+							}else if(type === 'filter'){
+								bindFilterForm(selectorMain,$infoValidateFilter);
+							}
 						}
 
 						$(selectorMain + " .show-option-validate").on('click',function(){
@@ -420,55 +461,30 @@ if(isset($infoForm)){
 	}
 
 
-	function bindValidateForm(selector){
-		<?php if(isset($infoForm) && $infoForm->content != ''): ?>
-			<?php foreach($infoForm->content as $nameElement => $infoElement): ?>
-				<?php if(count(@$infoElement['validate']['option']) > 0): ?>
-					<?php foreach($infoElement['validate']['option'] as $key => $value): ?>
-						<?php foreach($value as $key2 => $value2): ?>
-							<?php if($value2 == 'on'): ?>
-								$(selector + " .<?php echo $key ."-". $key2 ?>").attr("checked","checked");
-							<?php else: ?>
-								$(selector + " .<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
-							<?php endif; ?>
-						<?php endforeach; ?>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		<?php endif; ?>
+	function bindValidateForm(selector,infoValidate){
+		for(var key in infoValidate.optionMessage){
+			for(var key2 in infoValidate.optionMessage[key]){
+				for(var key3 in infoValidate.optionMessage[key][key2]){
+					var value = infoValidate.optionMessage[key][key2][key3];
+					if(key3.indexOf("::") !== -1){
+						key3 = key3.split("::")[1];
+					}
+					$(selector + " ."+key.toLowerCase()+"-"+key3).val(value);
+
+				}
+			}
+		}
 	}
 
-	function bindFilterForm(selector){
-		<?php if(isset($infoForm) && $infoForm->content != ''): ?>
-			<?php foreach($infoForm->content as $nameElement => $infoElement): ?>
-				<?php if(count(@$infoElement['filter']['option']) > 0): ?>
-					<?php foreach($infoElement['filter']['option'] as $key => $value): ?>
-						<?php foreach($value as $key2 => $value2): ?>
-							<?php if($value2 == 'on'): ?>
-								$(selector + " .<?php echo $key ."-". $key2 ?>").attr("checked","checked");
-								$("#<?php echo $key ."-". $key2 ?>").attr("checked","checked");
-							<?php else: ?>
-								$(selector + " .<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
-								$("#<?php echo $key ."-".$key2 ?>").val("<?php echo $value2 ?>");
-							<?php endif; ?>
-						<?php endforeach; ?>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		<?php endif; ?>
+	function bindFilterForm(selector,infoFilter){
+		for(var key in infoFilter){
+			for(var key2 in infoFilter[key]){
+				$(selector + " ." + key.toLowerCase() + "-" + key2).val(infoFilter[key][key2]);
+			}
+		}
 	}
 
 	function openTab(selector = null){
-		
-		// $(selector + " .tabAttribute").click(function(){
-		// 	$(selector).find(".attribute").removeClass('hide');
-		// 	$(selector).find(".option").addClass('hide');
-		// })
-		// $(selector + " .tabOption").click(function(){
-		// 	$(selector).find(".option").removeClass('hide');
-		// 	$(selector).find(".attribute").addClass('hide');
-		// })
-
 		$(selector + " .tabValidate").click(function(){
 			$(selector).find(".validateArea").removeClass('hide');
 			$(selector).find(".filterArea").addClass('hide');
@@ -480,7 +496,6 @@ if(isset($infoForm)){
 	}
 
 	function previewValidateForm(selector = null){
-		// console.log(selector); return false;
 		var action = $("#validateForm").attr('action');
 		$.ajax({
 			url  : action,
@@ -490,6 +505,7 @@ if(isset($infoForm)){
 				selector : selector 
 			},
 			success : function(data){
+				// console.log(data);
 				var source = data.split('<div class="hide">superman</div>');
 				// console.log(source);
 				$(selector + ' .row-show-code').removeClass('hide').addClass('animated flipInX');
@@ -529,9 +545,10 @@ if(isset($infoForm)){
 			var newArr = str.split('&');
 			var html = ''
 			$.each(newArr,function(index,val){
-				val = val.replace(/%5B/g,'[');
-				val = val.replace(/%5D/g,']');
+				var val    = decodeURI(val)
+				val        = val.replace(/%3A/gim,':');		
 				var option = val.split('=');
+
 				html += '<input class="" type="hidden" name="' + option[0] + '" value="' + option[1] + '" />';
 			})
 
@@ -572,7 +589,8 @@ if(isset($infoForm)){
 	}
 	
 	function changeIdInput(selector = null,nameElement =null){
-		// console.log($(selector).html());		
+		// console.log($(selector).html());	
+		// nameElement = locdau(nameElement);	
 		$(selector + " .name-element").text("[" + nameElement + "] Element");
 		$(selector + " .input-name-element-hidden").val(nameElement);
 		//name
@@ -599,11 +617,11 @@ if(isset($infoForm)){
 	}
 	
 	function showValidateTemplate(selector){
-		$(selector).parents('.showTemplateValidate').removeClass('hide').addClass("animated zoomIn");
+		$(selector).parents('.showTemplateValidate').removeClass('hide').slideDown();
 	}
 	
 	function hideValidateTemplate(selector,tagA){
-		$(selector).parents('.showTemplateValidate').removeClass("animated zoomIn").addClass('hide');
+		$(selector).parents('.showTemplateValidate').slideUp();
 		$(tagA).prev('span').removeClass('glyphicon-minus').addClass('glyphicon-plus');
 	}
 	
