@@ -101,7 +101,7 @@ code{
 }
 
 .glyphicon{
-	font-size: 9px;
+	/*font-size: 9px;*/
     margin-right: 5px;
 }
 
@@ -255,4 +255,14 @@ ul{
 .messageError{
 	height: 200px;
 	overflow-y: scroll;
+}
+
+.name-element{
+	display: inline-block;
+	margin-right: 8px;
+}
+
+.glyphicon-pencil:hover{
+	cursor: pointer;
+	color:blue;
 }

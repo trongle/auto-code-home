@@ -35,6 +35,16 @@ class FormController extends AbstractActionController
 		}
 	}
 
+	public function renameAction(){
+		if($this->request->isXmlHttpRequest()){
+			
+			$formTable = $this->getServiceLocator()->get("FormTable");
+			$formTable->updateForm($this->request->getPost(),['type' => 'changeName']);
+
+			return $this->response;
+		}
+	}
+
     public function removeAction(){
         $id      = $this->params()->fromRoute('id');
         $message = '';

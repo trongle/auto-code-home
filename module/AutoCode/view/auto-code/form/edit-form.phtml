@@ -634,6 +634,36 @@ if(isset($infoForm)){
 		}
 	}
 
+	function changeNameElement(selector){
+		var parent                 = $(selector).parents(".wrap");
+		var parentOfParent         = $(parent).parent();
+		var selectorParentOfParent = "." + $(parentOfParent).attr("class");
+		var prevElement            = $(selector).prev();
+		var html                   = $(prevElement).html("<input type='text' name='changeNameElement'>");
+		$("[name=changeNameElement]").on('blur',function(){
+			if($(this).val() !== ''){
+				var newName = $(this).val();
+				$(prevElement).text("[" + newName + "] Element");// sua lai ten input
+				var oldName       = selectorParentOfParent.split("-")[1];
+				$.ajax({
+					url  : "<?php echo BASE_URL . $this->url("form/default",["action" => "rename"]) ?>",
+					type :"POST",
+					data : {
+						newName : newName,
+						oldName : oldName,
+						formId  : "<?php echo $infoForm->id ?>",
+						element : decodeURI($("#validateForm").serialize())
+					},
+					success : function(data){
+						location.reload();
+					} 
+				})
+
+				$(this).remove();
+			}
+		})
+	}
+
 	function lazySaveButton(){
 		var offset = 250;
 		var duration = 200;

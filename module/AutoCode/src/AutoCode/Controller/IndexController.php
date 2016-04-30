@@ -275,6 +275,7 @@ class IndexController extends AbstractActionController
             $parse_str       = '';
             $post['element'] = rawurldecode($post['element']);
             parse_str($post['element'],$parse_str);
+      
             $post['element'] = $parse_str;
   
             unset($post->element['nameElement']);
@@ -319,6 +320,7 @@ class IndexController extends AbstractActionController
     private function createValidateString(){
         $codeValidate = '';
         foreach($this->validateName as $validate){
+
             $codeValidate   .= $this->setSpace(2) . '<span class="php-keyword">array</span><span class="php-plain">(</span><br/>'
                 . $this->setSpace(3) . '"name" <span class="php-plain">=></span> "' . $this->validateName[$validate] . '"<span class="php-plain">,</span><br/>'
                 . $this->validateOptionString(strtolower($validate))
@@ -343,7 +345,9 @@ class IndexController extends AbstractActionController
 
     private function validateOptionString($validateName){
         $codeValidate = '';
-        if(isset($this->validateOption[$validateName]) && count($this->validateOption[$validateName]) > 0){
+        
+        if(isset($this->validateOption[$validateName]) && count($this->validateOption[$validateName]) > 0 || 
+            isset($this->messageError[$validateName])){
                 $codeValidateOption = '';
                 //handle option validate
                 foreach($this->validateOption[$validateName] as $name => $value){
@@ -353,7 +357,7 @@ class IndexController extends AbstractActionController
                 }
 
                 //handle mesasge validate
-                if(!empty(trim($codeValidateOption)) || !empty($this->messageError)){
+                if(!empty(trim($codeValidateOption)) | !empty($this->messageError)){
                     $codeValidate   .= $this->setSpace(3) . '"options" <span class="php-plain">=></span> <span class="php-keyword">array</span><span class="php-plain">(</span><br/>';
                         $codeValidate .= $codeValidateOption;
                         $codeValidate .= $this->createMessageErrorString($validateName);

@@ -62,18 +62,21 @@ class FormTable extends AbstractTableGateway{
 
 	public function updateForm($data,$options = null){
 		if(!empty($data)){
+			if($options['type'] == 'addElement'){
+				$data['element'] = $this->setSerializeString($data['element']);
 
-			$data['element'] = $this->setSerializeString($data['element']);
-			$arr = unserialize($data['element']);
+				$insertData     = $this->setData($data,$options);
+						
+				$this->_tableGateway->update($insertData,array("id" => $data['formId']));
+			}else if($options['type'] == 'changeName'){
+				
+				$options['oldName'] = $data['oldName'];
+				$options['newName'] = $data['newName'];
+				$data['element'] = $this->setSerializeString($data['element'],$options);
 
-			//filter htmlTag
-			foreach ($arr as $key => $value) {
-				 $value['option']['nameLabel'] = htmlentities($value['option']['nameLabel']);
+				$this->_tableGateway->update(array('content' => $data['element']),array("id" => $data['formId']));
 			}
-
-			$insertData     = $this->setData($data,$options);
-					
-			$this->_tableGateway->update($insertData,array("id" => $data['formId']));
+			
 		}			
 		
 		return $this->_tableGateway->getLastInsertValue();
@@ -148,10 +151,17 @@ class FormTable extends AbstractTableGateway{
         return $insert;
     }
 
-    private function setSerializeString($elementString){
-		$element       = array();
+    private function setSerializeString($elementString,$options = null){
 		$elementString = rawurldecode($elementString);
-		parse_str($elementString,$element);
+		parse_str($elementString,$element);  		
+
+    	if($options['type'] == 'changeName'){
+			$oldName                   = $options['oldName']; 
+			$newName                   = $options['newName']; 
+			$element[$newName]         = $element[$oldName];
+			$element[$newName]['name'] = $newName;
+			unset($element[$oldName]);
+    	}
 	
 		foreach($element as $name => $ele){
 
