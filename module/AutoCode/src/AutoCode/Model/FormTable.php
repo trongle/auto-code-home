@@ -2,6 +2,7 @@
 
 namespace AutoCode\Model;
 
+use AutoCode\Model\Entity\Form;
 use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\TableGateway\TableGateway;
@@ -78,12 +79,41 @@ class FormTable extends AbstractTableGateway{
 		return $this->_tableGateway->getLastInsertValue();
 	}
 
+	public function getFormById($id,$options = null){
+		$result = '';
+
+		if(!empty($id)){
+			$result = $this->_tableGateway->select(function(Select $select) use($id){
+				$select->columns(array("content","description","created_date","user_id","status","name","attribute"))
+						->where->equalTo("id",$id);
+			})->current();
+		}
+
+		return $result;
+	}
+
+	public function makeClone(Form $formCode = null,$options = null){
+		if(!empty($formCode)){
+			$formCode = $formCode->getArrayCopy();
+			if(preg_match("#\(\d+\)#imU",$formCode['name'],$matches)){//khong phai ban clone dau tien
+				preg_match("#\d+#m",$matches[0],$numberOfClone);//get 2 in (2)
+				$formCode['name'] = str_replace($matches[0],"(" . ++$numberOfClone[0] . ")",$formCode['name'] );//repalce (1) => (2);
+				
+			}else{// la ban clone dau tien
+				$formCode['name'] = $formCode['name']."(1)";
+			}
+			
+			$this->_tableGateway->insert($formCode);
+
+			return $this->_tableGateway->lastInsertValue;
+		}
+	}
+
 	private function setData($data,$options = null){
 		$insert    = array();
 		$attribute = array();
 
         if($options['type'] == 'draf'){
-
 			$attribute['id']     = $data['idForm'];
 			$attribute['class']  = $data['classForm'];
 			$attribute['method'] = $data['methodForm'];

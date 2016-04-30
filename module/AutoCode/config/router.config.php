@@ -43,7 +43,6 @@ $code = array(
                 'constraints' => array(
                     'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'         => '\d+'
-                    // 'controller'     => '[a-zA-Z][a-zA-Z0-9_-]*'
                 ),
             ),
         ),
@@ -69,7 +68,6 @@ $form = array(
                 'constraints' => array(
                     'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'         => '\d+'
-                    // 'controller'     => '[a-zA-Z][a-zA-Z0-9_-]*'
                 ),
             ),
         ),

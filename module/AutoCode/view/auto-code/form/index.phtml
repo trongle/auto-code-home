@@ -24,6 +24,7 @@
 		    			<th>Status</th>
 		    			<th>ID</th>
 		    			<th>Action</th>
+		    			<th>Clone</th>
 		    			<th>Remove</th>
 		    		</tr>
 		    	</thead>
@@ -47,12 +48,14 @@
 		    							 <td>%s</td>
 		    							 <td>%s</td>
 		    							 <td>%s</td>
-		    							 <td >%s</td>',
+		    							 <td>%s</td>
+		    							 <td>%s</td>',
 		    							 $this->url('form/default',array("action" => 'editForm','id' => $form['id'])),
 		    							 $form['name'],date('d-m-Y', $form['created_date']), $form['username'],
 		    							 $status,
 		    							 $form['id'],
 		    							 '<a href="' . $this->url('code/default',['action' => 'createCode','id' => $form['id']]) . '">Create Code</a>',
+		    							 '<a href="' . $this->url('form/default',['action' => 'cloneForm','id' => $form['id']]) . '">Clone this form</a>',
 		    							 '<a href="' . $this->url('form/default',['action' => 'remove','id' => $form['id']]) . '"><span class="delete-close"></span></a>');
 		    				$list .= '</tr>';
 		    				}

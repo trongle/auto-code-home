@@ -66,6 +66,18 @@ class FormController extends AbstractActionController
 		}
 	}
 
+	public function cloneFormAction(){
+		$id        = $this->params()->fromRoute('id');
+		$formTable = $this->getServiceLocator()->get("FormTable");
+		$formCode  = $formTable->getFormById($id); 
+		
+		if($formCode){
+			$formTable->makeClone($formCode);
+		}
+
+		return $this->redirect()->toRoute('form');
+	}
+
 	public function editFormAction(){
 		$authenticate = $this->getServiceLocator()->get('MyAuth');
 		$auth         = $authenticate->_authen;
