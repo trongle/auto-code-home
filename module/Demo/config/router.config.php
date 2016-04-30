@@ -25,11 +25,11 @@ $demo_user = array(
 );
 
 $city = array(
-    "type"=> "Segment",
+    "type"=> "Literal",
     "options" => array(
-        "route" => "/adminuser/city",
+        "route" => "/demo/city",
         "defaults" => array(
-            "__NAMESPACE__" => "Adminuser\Controller",
+            "__NAMESPACE__" => "Demo\Controller",
             "controller"    => "city",
             "action"        => "index"
         )

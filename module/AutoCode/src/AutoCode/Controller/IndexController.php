@@ -100,6 +100,7 @@ class IndexController extends AbstractActionController
         if($this->request->isXmlHttpRequest()){
 
             $post        = $this->filterPost($this->request->getPost()); 
+            
             $nameElement = str_replace(".wrapper-","",$post->selector); 
             $post        = $post->element[$nameElement];
       
@@ -272,9 +273,10 @@ class IndexController extends AbstractActionController
     private function filterPost($post = null){
         if(!empty($post)){
             $parse_str       = '';
+            $post['element'] = rawurldecode($post['element']);
             parse_str($post['element'],$parse_str);
             $post['element'] = $parse_str;
-
+  
             unset($post->element['nameElement']);
             unset($post->element['validateElement']);
             unset($post->element['filterElement']);

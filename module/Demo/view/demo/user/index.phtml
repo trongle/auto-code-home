@@ -24,7 +24,7 @@
                                     <?php foreach ($this->items as $item): ?>
                                         <tr>
                                             <td>
-                                                <a class="tooltips" data-placement="top" data-original-title="Xem thông tin người dùng" href="">
+                                                <a class="tooltips" data-placement="top" data-original-title="Xem thông tin người dùng" href="<?php echo $this->url("demo_user/default",['action' => 'add' ,'id' => $item['user_id']] ) ?>">
                                                     <?php echo $item['fullname']; ?>
                                                 </a>
                                             </td>
@@ -35,8 +35,7 @@
                                                 <?php echo $item['group_name'] ?>
                                             </td>
                                             <td style="text-align:center;">
-                                                <a href="<?php echo  $this->url('demo_user/default',['action' => 'edit']) ?>" class="glyphicon glyphicon-floppy-saved" data-placement="top" data-original-title="Sửa thông tin"></a>
-                                                <a href="<?php echo  $this->url('demo_user/default',['action' => 'destroy']) ?>" class="glyphicon glyphicon-floppy-remove" data-placement="top" data-original-title="Xóa người dùng"></a>     
+                                                <a href="<?php echo  $this->url('demo_user/default',['action' => 'destroy','id' => $item['user_id']]) ?>" class="glyphicon glyphicon-floppy-remove" data-placement="top" data-original-title="Xóa người dùng"></a>     
                                             </td>                                           
                                         </tr>
 

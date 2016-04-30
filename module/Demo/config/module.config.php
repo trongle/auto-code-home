@@ -4,6 +4,7 @@ return array(
         'invokables' => array(
             // 'Demo\Controller\Index' => 'Demo\Controller\IndexController',
             'Demo\Controller\User'  => 'Demo\Controller\UserController',
+            'Demo\Controller\City'  => 'Demo\Controller\CityController',
         ),
     ),   
     'view_manager' => array(

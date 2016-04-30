@@ -26,7 +26,7 @@ class DistrictTable extends AbstractTableGateway{
                 public function listItemById($id){
 		$result =   $this->_tableGateway->select(function(Select $select) use($id){
 							$select->columns(array("district_name","district_id","city_id"))
-                                                                                                                            ->where(array("district_id" => $id ));
+                                    ->where(array("district_id" => $id ));
 					})->current();
 
 		return $result;

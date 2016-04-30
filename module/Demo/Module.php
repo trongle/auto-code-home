@@ -2,26 +2,25 @@
 
 namespace Demo;
 
-use Demo\Form\Form01;
-use Zend\Mvc\MvcEvent;
+use Demo\Form\FormUser;
+use Demo\Form\FormUserFilter;
 use Demo\Model\CityTable;
-use Demo\Model\UserTable;
-use Demo\Model\WardTable;
-use Demo\Form\FormContact;
-use Demo\Model\GroupTable;
-use Demo\Form\Form01Filter;
+use Demo\Model\DistrictTable;
 use Demo\Model\Entity\City;
+use Demo\Model\Entity\District;
+use Demo\Model\Entity\Group;
 use Demo\Model\Entity\User;
 use Demo\Model\Entity\Ward;
-use Demo\Model\Entity\Group;
-use Demo\Model\DistrictTable;
-use Demo\Model\Entity\District;
-use Demo\Form\FormContactFilter;
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Db\TableGateway\TableGateway;
-use Zend\Stdlib\Hydrator\ObjectProperty;
+use Demo\Model\GroupTable;
+use Demo\Model\UserTable;
+use Demo\Model\WardTable;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\TableGateway\Feature\GlobalAdapterFeature;
+use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\Mvc\ModuleRouteListener;
+use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\Hydrator\ObjectProperty;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -52,7 +51,8 @@ class Module implements AutoloaderProviderInterface
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $adapter = $e->getApplication()->getServiceManager()->get("Zend\Db\Adapter\Adapter");
+        $adapter = $e->getApplication()->getServiceManager()->get("db_demo");
+        GlobalAdapterFeature::setStaticAdapter($adapter);
     }
 
     public function getFormElementConfig(){
@@ -66,6 +66,11 @@ class Module implements AutoloaderProviderInterface
                     "form01" => function($sm){
                          $form = new Form01();
                          $form->setInputFilter(new Form01Filter());
+                         return $form;
+                    },
+                    "formDemoUser" => function($sm){
+                         $form = new FormUser();
+                         $form->setInputFilter(new FormUserFilter());
                          return $form;
                     },
                )

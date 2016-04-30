@@ -119,7 +119,7 @@ class FormTable extends AbstractTableGateway{
     }
 
     private function setSerializeString($elementString){
-		$element = array();
+		$element       = array();
 		$elementString = rawurldecode($elementString);
 		parse_str($elementString,$element);
 	
