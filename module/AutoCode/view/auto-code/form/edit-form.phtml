@@ -127,7 +127,7 @@ if(isset($infoForm)){
 				echo $this->partial("auto-code/form/view_not_edit.phtml", array('validateElement' => $validateElement, 'filterElement' => $filterElement));
 			}
 		?>
-			
+
 	</form>
 	<input type="hidden" name="formIdHidden" />
 </div>
@@ -636,36 +636,163 @@ if(isset($infoForm)){
 
 	function changeNameElement(selector){
 		var parent                 = $(selector).parents(".wrap");
-		var parentOfParent         = $(parent).parent();
-		var selectorParentOfParent = "." + $(parentOfParent).attr("class");
+		var selectorParentOfParent = "." + $(parent).parent().attr("class");//selector wrapper-*
 		var prevElement            = $(selector).prev();
+		var oldHtml                = $(prevElement).html();//lay ten cu cua element
 		var html                   = $(prevElement).html("<input type='text' name='changeNameElement'>");
+		$("[name=changeNameElement]").focus();
 		$("[name=changeNameElement]").on('blur',function(){
-			if($(this).val() !== ''){
-				var newName = $(this).val();
-				$(prevElement).text("[" + newName + "] Element");// sua lai ten input
-				var oldName       = selectorParentOfParent.split("-")[1];
-				$.ajax({
-					url  : "<?php echo BASE_URL . $this->url("form/default",["action" => "rename"]) ?>",
-					type :"POST",
-					data : {
-						newName : newName,
-						oldName : oldName,
-						formId  : "<?php echo $infoForm->id ?>",
-						element : decodeURI($("#validateForm").serialize())
-					},
-					success : function(data){
-						location.reload();
-					} 
-				})
-
-				$(this).remove();
+			if($(this).val() !== ''){// neu co nhap ten moi
+				$(prevElement).html("[" + $(this).val() + "] Element");// sua lai ten input
+				$(selectorParentOfParent + " .rename").val($(this).val())//them ten moivao input hidden name='rename'
+			}else{//neu khong nhap ten moi
+				$(prevElement).html(oldHtml);//giu lai ten cu
 			}
 		})
 	}
 
+	function convertElement(selector,selectorMain){
+		var selectorParent    = $(selector).parents(".convertArea");
+		if(selectorMain === ''){
+			selectorMain = "." + $(selector).parents(".elementAttrs").children().first().attr("class");
+		}
+		var valueElementConvert = $(selectorParent).find('[name=convertInput]').val();
+		
+		if(valueElementConvert !== ''){		
+			// convert label
+			var labelString         = valueElementConvert.match(/<label(.*)/i);
+			if(labelString !== null){
+				var labelClassString = labelString[1].match(/class="(.*?)"/i);
+				var labelForString   = labelString[1].match(/for="(.*?)"/i);
+				var labelNameString  = labelString[0].match(/<label.*?>(.*)<\/label>/i);
+				
+				if(labelNameString  !== null)$(selectorMain + " .nameLabel").val(labelNameString[1]);
+				if(labelClassString !== null)$(selectorMain + " .classLabel").val(labelClassString[1]);
+				if(labelForString   !== null)$(selectorMain + " .forLabel").val(labelForString[1]);
+			}//end label
+
+			// convert input	
+			var inputString            = valueElementConvert.match(/<input(.*?)>/i);
+			if(inputString !== null){
+				var inputClassString       = inputString[1].match(/class="(.*?)"/i);
+				var inputIdString          = inputString[1].match(/id="(.*?)"/i);
+				var inputPlaceholderString = inputString[1].match(/placeholder="(.*?)"/i);
+				var inputValueString       = inputString[1].match(/value="(.*?)"/i);
+				var inputTypeString        = inputString[1].match(/type="(.*?)"/i);
+				var inputNameString        = inputString[1].match(/name="(.*?)"/i);
+		
+				if(inputClassString       !== null) $(selectorMain + " .classElement").val(inputClassString[1]);
+				if(inputIdString          !== null) $(selectorMain + " .idElement").val(inputIdString[1]);
+				if(inputPlaceholderString !== null) $(selectorMain + " .placeElement").val(inputPlaceholderString[1]);
+				if(inputValueString       !== null) $(selectorMain + " .valueElement").val(inputValueString[1]);
+				if(inputNameString        !== null) $(selectorMain + " .attrElement").val("name:" + inputNameString[1]);
+				if(inputTypeString        !== null) $(selectorMain + " .typeElement").val(inputTypeString[1]);
+				
+			}//end input
+			
+			// convert select
+			var selectString = valueElementConvert.match(/<select(.*?)>/i);//<select></select>
+			var optionString   = valueElementConvert.match(/<option.*?>(.*)<\/option>/img);//<option>.*</option>
+			if(selectString !== null){//neu la selectbox
+				var selectClassString       = selectString[1].match(/class="(.*?)"/i);
+				var selectIdString          = selectString[1].match(/id="(.*?)"/i);
+				var selectNameString        = selectString[1].match(/name="(.*?)"/i);
+
+				if(selectClassString       !== null) $(selectorMain + " .classElement").val(selectClassString[1]);
+				if(selectIdString          !== null) $(selectorMain + " .idElement").val(selectIdString[1]);
+				if(selectNameString        !== null) $(selectorMain + " .attrElement").val("name:" + selectNameString[1]);
+
+				$(selectorMain + " .placeElement").val('');//xoa value input khong can thiet
+				$(selectorMain + " .valueElement").val('');//xoa value input khong can thiet
+				$(selectorMain + " .typeElement").val("select");
+				$(selectorMain + " .typeElement").trigger('change');//hien input for select type
+			}//end
+
+			if(optionString !== null){// neu co option select box 
+				var optionValueString = '';
+				for(var i = 0;i < optionString.length;i++){
+					optionValueString += optionString[i].match(/value="(.*?)"/i)[1] + ","; //tao chuoi valueOption 1,2,3
+					$(selectorMain + " .valueOption").val(optionValueString.slice(0,-1));				}
+			
+			}//end
+			
+			if(optionString !== null){// neu co name select box 
+				console.log(optionString);
+				var optionNameString = '';
+				for(var i = 0;i < optionString.length;i++){
+					optionNameString += optionString[i].match(/>(.*)</i)[1] + ","; //tao chuoi valueOption 1,2,3
+					$(selectorMain + " .nameOption").val(optionNameString.slice(0,-1));				}
+			
+			}//end
+			//end Select box
+			
+			// textarea
+			var textareaString = valueElementConvert.match(/<textarea(.*?)>/i);
+			if(textareaString !== null){
+				var textareaClassString       = textareaString[1].match(/class="(.*?)"/i);
+				var textareaIdString          = textareaString[1].match(/id="(.*?)"/i);
+				var textareaPlaceholderString = textareaString[1].match(/placeholder="(.*?)"/i);
+				var textareaNameString        = textareaString[1].match(/name="(.*?)"/i);
+				var textareaColString         = textareaString[1].match(/cols="(.*?)"/i);
+				var textareaRowString         = textareaString[1].match(/rows="(.*?)"/i);
+				
+				
+				if(textareaClassString       !== null) $(selectorMain + " .classElement").val(textareaClassString[1]);
+				if(textareaIdString          !== null) $(selectorMain + " .idElement").val(textareaIdString[1]);
+				if(textareaPlaceholderString !== null) $(selectorMain + " .placeElement").val(textareaPlaceholderString[1]);
+				if(textareaNameString        !== null) $(selectorMain + " .attrElement").val("name:" + textareaNameString[1]);
+				$(selectorMain + " .typeElement").val('textarea');
+
+				if(textareaColString        !== null){//xu ly attibute COLS
+					if($(selectorMain + " .attrElement").val() !== ''){
+						$(selectorMain + " .attrElement").val($(selectorMain + " .attrElement").val() + ",cols:" + textareaColString[1]);
+
+					}else{
+						$(selectorMain + " .attrElement").val("cols:" + textareaColString[1]);
+					}
+				}
+
+				if(textareaRowString        !== null){//xu ly attibute COLS
+					if($(selectorMain + " .attrElement").val() !== ''){
+						$(selectorMain + " .attrElement").val($(selectorMain + " .attrElement").val() + ",rows:" + textareaRowString[1]);
+					}else{
+						$(selectorMain + " .attrElement").val("rows:" + textareaRowString[1]);
+					}
+				}
+			}//end textarea
+			
+			//button
+			//<button type="button" onclick="alert('Hello World!')">Click Me!</button>
+			var buttonString = valueElementConvert.match(/<button(.*?)>/i);
+			if(buttonString !== null){
+				var buttonClassString = buttonString[1].match(/class="(.*?)"/i);
+				var buttonIdString    = buttonString[1].match(/id="(.*?)"/i);
+				var buttonNameString  = buttonString[1].match(/name="(.*?)"/i);
+				var buttonValueString = buttonString[1].match(/value="(.*?)"/i);
+				var buttonTypeString = buttonString[1].match(/type="(.*?)"/i);
+
+				if(buttonClassString !== null) $(selectorMain + " .classElement").val(buttonClassString[1]);
+				if(buttonIdString    !== null) $(selectorMain + " .idElement").val(buttonIdString[1]);
+				if(buttonValueString !== null) $(selectorMain + " .valueElement").val(buttonValueString[1]);
+				if(buttonNameString  !== null) $(selectorMain + " .attrElement").val("name:" + buttonNameString[1]);
+				$(selectorMain + " .placeElement").val("");
+				$(selectorMain + " .typeElement").val("button");
+
+				if(buttonTypeString        !== null){//xu ly attibute COLS
+					if($(selectorMain + " .attrElement").val() !== ''){
+						$(selectorMain + " .attrElement").val($(selectorMain + " .attrElement").val() + ",type:" + buttonTypeString[1]);
+
+					}else{
+						$(selectorMain + " .attrElement").val("type:" + buttonTypeString[1]);
+					}
+				}
+			
+			}
+		}
+	}
+
 	function lazySaveButton(){
-		var offset = 250;
+		var offset   = 250;
 		var duration = 200;
 		 
 		$(window).scroll(function() {

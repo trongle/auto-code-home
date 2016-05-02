@@ -103,7 +103,7 @@ class IndexController extends AbstractActionController
             
             $nameElement = str_replace(".wrapper-","",$post->selector); 
             $post        = $post->element[$nameElement];
-      
+
             //
             $this->attribute          = $post['attribute'];
             $this->option             = $post['option'];
@@ -275,13 +275,27 @@ class IndexController extends AbstractActionController
             $parse_str       = '';
             $post['element'] = rawurldecode($post['element']);
             parse_str($post['element'],$parse_str);
-      
+     
+            //xu ly rename
+            foreach($parse_str['renameInfo'] as $oldName => $newName){
+                if(!empty($newName) && $newName != $oldName){
+
+
+                    if(str_replace(".wrapper-","",$post['selector']) == $oldName){//neu selector bang oldname doi thanh newName de previewCode
+                        $post['selector'] = ".wrapper-" . $newName;
+                    }//end
+                    $parse_str[$newName] = $parse_str[$oldName];
+                    $parse_str[$newName]['name'] = $newName;
+                    unset($parse_str[$oldName]); //xoa element oldname
+                }//end
+            }
             $post['element'] = $parse_str;
   
             unset($post->element['nameElement']);
             unset($post->element['validateElement']);
             unset($post->element['filterElement']);
-
+            unset($post->element['renameInfo']);
+           
             $post = $this->handleMessageError($post);
         }
 

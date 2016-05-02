@@ -40,12 +40,16 @@
 		    </div>
 		</div>
 	</div>
+
 	<div class="row box viewCode hide">
 		<!-- CODE FOR CLASS FORM -->
 		<div class="col-md-6 ">
 			<h3>Code For Class Form</h3>
-			<div  name="code" class="form-control code">
-				<code>
+			<button class="btn pull-right" type="button" data-clipboard-target="#classForm">
+				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
+			</button>
+			<div  name="code" class="form-control code" >
+				<code id="classForm">
 					<span class="php-keyword">namespace</span> <span class="php-plain name-space">;</span><br/>
 					<br/>
 					<span class="php-keyword">use</span> <span class="php-plain">Zend\Form\Form;</span><br/>
@@ -78,7 +82,7 @@
 					        <?php echo str_repeat("&nbsp;",10) ?><span class="php-keyword">switch</span><span class="php-plain">(</span><span class="php-variable">$fieldName</span><span class="php-plain">){</span><br/>
 					            <?php if($infoForm->content != ""): ?>
 						            <?php foreach($infoForm->content as $nameElement => $infoElement): ?>
-						            	<?php if(array_key_exists('nameLabel',$infoElement['option'])): ?>
+						            	<?php if(array_key_exists('nameLabel',$infoElement['option']) && $infoElement['type'] != 'submit' && $infoElement['type'] != 'button'): ?>
 								            <?php echo str_repeat("&nbsp;",15) ?><span class="php-keyword">case </span> <?php echo '"' . $nameElement . '"' ?> <span class="php-plain">:</span><br>
 								            <?php echo str_repeat("&nbsp;",20) ?><span class="php-keyword">return</span> <?php echo '"' . $infoElement['option']['nameLabel'] . '"' ?><span class="php-plain">;</span><br/>
 								            <?php echo str_repeat("&nbsp;",20) ?><span class="php-keyword">break</span><span class="php-plain">;</span><br/>
@@ -96,8 +100,11 @@
 		<!-- CODE FOR VALIDATE AND FILTER -->
 		<div class="col-md-6 ">
 			<h3>Code For Class Filter And Validate</h3>
+			<button class="btn pull-right" type="button" data-clipboard-target="#validateFilter">
+				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
+			</button>
 			<div  name="code" class="form-control code">
-				<code>
+				<code id="validateFilter">
 					<span class="php-keyword">namespace</span> <span class="php-plain name-space">;</span><br/>
 					<br/>
 					<span class="php-keyword">use</span> <span class="php-plain">Zend\InputFilter\InputFilter;</span><br/>
@@ -118,8 +125,11 @@
 		<!-- CODE FOR MODULE.PHP -->
 		<div class="col-md-6">
 			<h3>Code For Module(Module.php)</h3>
+			<button class="btn pull-right" type="button" data-clipboard-target="#module">
+				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
+			</button>
 			<div  name="code" class="form-control code">
-				<code>
+				<code id="module">
 					<span class="php-keyword">use</span> <span class="php-plain use-name-space">;</span><br/>
 					<span class="php-keyword">use</span> <span class="php-plain use-name-space">;</span><br/>
 					<br/>
@@ -139,10 +149,14 @@
 		</div>
 		<!-- END CODE FOR MODULE.PHP -->
 
+		<!-- CODE FOR ACTION(CONTROLLER) -->
 		<div class="col-md-6">
 			<h3>Code For Action(Controller)</h3>
+			<button class="btn pull-right" type="button" data-clipboard-target="#actionController">
+				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
+			</button>
 			<div  name="code" class="form-control code">
-				<code>
+				<code id="actionController">
 					<br/>
 					<span class="php-keyword">use</span> <span class="php-plain">Zend\View\Model\ViewModel;</span><br/>
 					<br/>
@@ -159,11 +173,16 @@
 				</code>
 			</div>
 		</div>
-
+		<!-- END CODE FOR ACTION(CONTROLLER) -->
+		
+		<!-- CODE FOR VIEW -->
 		<div class="col-md-6">
 			<h3>Code For View</h3>
+			<button class="btn pull-right" type="button" data-clipboard-target="#view">
+				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
+			</button>
 			<div  name="code" class="form-control code">
-				<code>
+				<code id="view">
 					<?php echo str_repeat("&nbsp;",5) ?><span class="php-variable">$form</span><span class="php-plain">->prepare();</span><br/>
 					<?php echo str_repeat("&nbsp;",5) ?><span class="php-keyword">echo</span> <span class="php-variable">$form</span><span class="php-plain">->showError();</span><br/>
 					<br/>
@@ -181,11 +200,13 @@
 				</code>
 			</div>
 		</div>
+		<!-- END CODE FOR ACTION(CONTROLLER) -->
 	</div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.10/clipboard.min.js"></script>
 <script>
 	$("document").ready(function(){
+		new Clipboard('.btn');
 		$("#createForm").on("click",function(){
 			flag  = true;
 			if($("[name=inputNameClassForm]").val() === ""){

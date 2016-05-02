@@ -21,6 +21,23 @@
 				
 
 				<div class="row attribute">
+					<!-- CONVERT AREA -->
+					<div class="convertArea">
+						<div class="col-md-10">
+							<div class="form-group">					
+								<label >Convert</label>
+								<textarea class="form-control" rows="5" name="convertInput"></textarea>
+							</div>
+						</div>
+						
+						<div class="col-md-2">
+							<div class="form-group ">
+								<label>&nbsp;</label><br/><br/>
+								<button class="btn btn-primary" onclick="convertElement(this,'');" type="button">Convert</button>
+							</div>
+						</div>
+					</div>
+
 					<!-- OPTIONS -->	
 					<div class="col-md-4">
 						<div class="form-group">					
@@ -46,7 +63,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="disableHtml">Html escape label</label><br/>
-							<input type="checkbox" class="form-control disableHtml"  name="requiredElement"/>
+							<input type="checkbox" class="form-control disableHtml" checked="checked" name="requiredElement"/>
 						</div>
 					</div>
 

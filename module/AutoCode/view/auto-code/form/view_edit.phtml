@@ -1,4 +1,6 @@
 <?php foreach($this->infoForm->content as $nameElement => $infoElement): ?>
+	<?php if($nameElement == 'renameInfo'): continue; ?>
+	<?php else: ?>
 	<div class="row box hide elementAttrs" >
 		<div class="wrapper-<?php echo $nameElement ?>">
 			<div class="col-md-12">
@@ -10,6 +12,7 @@
 				<div class="col-md-6">
 					<h3 class="name-element">[...] Element</h3>
 					<span onclick="changeNameElement(this)" title="change name element" class="glyphicon glyphicon-pencil"></span>
+					<input type="hidden" class="rename" name="renameInfo[<?php echo @$nameElement?>]"></input>
 					<input type="hidden" name="name" value="<?php echo @$infoElement->name ?>" class="input-name-element-hidden">
 					<div class="row" style="margin-bottom: 30px;">
 						<div class="col-md-12 tab tabAttribute">
@@ -21,6 +24,23 @@
 					</div>
 
 					<div class="row attribute">
+						<!-- CONVERT AREA -->
+						<div class="convertArea">
+							<div class="col-md-10">
+								<div class="form-group">					
+									<label >Convert</label>
+									<textarea class="form-control" rows="5" name="convertInput"></textarea>
+								</div>
+							</div>
+							
+							<div class="col-md-2">
+								<div class="form-group ">
+									<label>&nbsp;</label><br/><br/>
+									<button class="btn btn-primary" onclick="convertElement(this,'.wrapper-<?php echo $nameElement ?>');" type="button">Convert</button>
+								</div>
+							</div>
+						</div>
+
 						<!-- OPTIONS -->
 						<div class="col-md-4">
 							<div class="form-group">					
@@ -237,7 +257,7 @@
 							<h4>Filter &amp; Validate</h4>
 						</div>
 					</div>
-
+					
 					<div  name="code" class="form-control code">
 
 					</div>
@@ -249,4 +269,5 @@
 			</div>
 		</div>
 	</div>
+<?php endif; ?>
 <?php endforeach; ?>

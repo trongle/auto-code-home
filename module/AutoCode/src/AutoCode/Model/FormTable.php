@@ -155,6 +155,15 @@ class FormTable extends AbstractTableGateway{
 		$elementString = rawurldecode($elementString);
 		parse_str($elementString,$element);  		
 
+		 //xu ly rename
+        foreach($element['renameInfo'] as $oldName => $newName){
+            if(!empty($newName) && $newName != $oldName){// neu co doi ten 
+                $element[$newName] = $element[$oldName];
+                $element[$newName]['name'] = $newName;
+                unset($element[$oldName]); //xoa element oldname
+            }//end
+        }
+
     	if($options['type'] == 'changeName'){
 			$oldName                   = $options['oldName']; 
 			$newName                   = $options['newName']; 
@@ -202,6 +211,7 @@ class FormTable extends AbstractTableGateway{
 		unset($element['filterElement']);
 		unset($element['validateElement']);
 		unset($element['nameElement']);
+		unset($element['renameInfo']);
 
 		return serialize($element);
 	}

@@ -699,4 +699,21 @@
 		})
 	}
 	
+
+		$.ajax({
+					url  : "<?php echo BASE_URL . $this->url("form/default",["action" => "rename"]) ?>",
+					type :"POST",
+					data : {
+						newName : newName,
+						oldName : oldName,
+						formId  : "<?php echo $infoForm->id ?>",
+						element : decodeURI($("#validateForm").serialize())
+					},
+					success : function(data){
+						var newName = $(this).val();
+						$(prevElement).text("[" + newName + "] Element");// sua lai ten input
+						var oldName       = selectorParentOfParent.split("-")[1];
+						// location.reload();
+					} 
+				})
 </script>
