@@ -10,6 +10,7 @@ return array(
     'modules' => array(
         'Application',
         'AutoCode',
+        'AutoDb',
         'Demo'
     ),
 
