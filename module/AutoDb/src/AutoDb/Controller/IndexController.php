@@ -13,50 +13,61 @@ class IndexController extends AbstractActionController
 
 	public function __construct(){
 		//add script
-    	$this->_script[] = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-boilerplate/4.1.0/jquery.boilerplate.min.js';
+        $this->_script[] = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-boilerplate/4.1.0/jquery.boilerplate.min.js';
+    	  $this->_script[] = URL_JS . '/jquery-ui.js';
 	}
 
     public function indexAction()
-    {	
+    {
     	$this->addScript();
 
-    	//get ListTableName
 		$listTableNames = $this->getListTableName();
 
 		return array(
 			'listTableNames' => $listTableNames
 		);
-    }   
+    }
 
     public function getListFieldAction(){
     	if($this->request->isXmlHttpRequest()){
-    		$nameTable = $this->request->getPost('nameTable',0);
-
+            $nameTable = $this->request->getPost('nameTable',0);
+            $action    = $this->request->getPost('action');
+            $listField = '';
+            $flagTable = '';
     		if($nameTable){
-				$metaData       = $this->getMetaData();
-				$listField      = $metaData->getColumns($nameTable);
-				$listFieldNames = array();
-				$listFieldTypes = array();
+            if($listField == '' || $flagTable != $nameTable){
+                $flagTable = $nameTable;
 
-				foreach($listField as $field){
-					$listFieldNames[$field->getName()] = $field->getDataType();
-				}
-    		}
-    		
-    		return new JsonModel(array(
-                'listFieldNames' => $listFieldNames
-            ));
+                $metaData       = $this->getMetaData();
+                $listField      = $metaData->getColumns($nameTable);
 
+                $listFieldNames = array(); //for action view
+                $fieldNames     = array();//for action autocomplete
+
+                foreach($listField as $field){
+                    $listFieldNames[$field->getName()] = $field->getDataType();
+                    $fieldNames[] = $field->getName();
+                }
+            }
+
+            if($action == 'view'){//handle for view field
+        		return new JsonModel(array(
+                    'listFieldNames' => $listFieldNames,
+										'listFieldLiteral' => $fieldNames
+                ));
+            }//end
+
+        }
     	}else{
     		echo "Not permission";
     	}
-    }			
+    }
 
     protected function addScript(){
     	if(count($this->_script) > 0){
 	    	$script = $this->getServiceLocator()->get('viewhelpermanager')->get('headScript');
 	    	foreach($this->_script as $js){
-	        	$script->appendFile($js);    		
+	        	$script->appendFile($js);
 	    	}
     	}
     }

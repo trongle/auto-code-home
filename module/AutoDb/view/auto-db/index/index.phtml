@@ -1,16 +1,15 @@
-<?php 
+<?php
 	$listTableNames = $this->listTableNames();
-	
  ?>
 <section class="table-list">
 	<div class="hide">
-		<input type="hidden" name="urlGetField" value="<?php echo BASE_URL . $this->url('autoDb/default',[ 'action' => 'getListField']) ?>">	
+		<input type="hidden" name="urlGetField" value="<?php echo BASE_URL . $this->url('autoDb/default',[ 'action' => 'getListField']) ?>">
 	</div>
 	<div class="container">
 		<div class="row col-md-3">
 			<select class="list-table form-control">
 				<option value="empty">---- List table ----</option>
-				<?php  
+				<?php
 					if(!empty($listTableNames)){
 						foreach($listTableNames as $table){
 							echo "<option value='" . strtolower($table) ."'>" . $table . "</option>";
@@ -20,14 +19,14 @@
 			</select>
 		</div>
 		<div class="col-md-2">
-			<button type="button"  class="add-table btn btn-info form-control">Add</button>	
+			<button type="button"  class="add-table btn btn-info form-control">Add</button>
 		</div>
-	</div>	
+	</div>
 </section>
 
 <section class="field-list" style="display: none">
 	<h3 class="display-name-table">[filters] Table</h3>
-	<table class="table"> 
+	<table class="table">
 		<thead>
 			<tr>
 				<th>
@@ -48,19 +47,20 @@
 			<button class="btn-display-delete btn btn-info btn-sm" type="button">DELETE</button>
 		</div>
 		<div class="col-md-8">
-			<div class="col-md-3">
-				<select class="conditional form-control">
-					<option value="where">Where</option>
-					<option value="whereand">WhereAnd</option>
-					<option value="whereor">WhereOr</option>
-				</select>
+			<div class="row">
+				<div class="col-md-3">
+					<select class="conditional-name form-control">
+						<option value="where">Where</option>
+						<option value="whereor">WhereOr</option>
+					</select>
+				</div>
+				<div class="col-md-5">
+					<input id="autocomplete-field" class="form-control conditional-value"></input>
+				</div>
+				<button class="btn-add-chain btn btn-info btn-sm" type="button">ADD CHAIN</button>
+				<button class="btn-add-new btn btn-info btn-sm" type="button">ADD NEW</button>
+						</div>
 			</div>
-			<div class="col-md-3">
-				<input class="form-control"></input>
-			</div>
-			<button class="btn-add-chain btn btn-info btn-sm" type="button">ADD CHAIN</button>
-			<button class="btn-add-new btn btn-info btn-sm" type="button">ADD NEW</button>
-		</div>
 	</div>
 </section>
 
@@ -75,41 +75,83 @@
 		(function(){
 			var btnAddTable      = $('.add-table');
 			var listTable        = $('.list-table');
-			var btnDisplaySelect = $('.btn-display-select');			
-			var btnDisplayInsert = $('.btn-display-insert');			
-			var btnDisplayUpdate = $('.btn-display-update');			
-			var btnDisplayDelete = $('.btn-display-delete');			
-			var btnDisplayCustom = $('.btn-display-custom');			
-			
-			btnAddTable.on('click',function(){
+			var btnDisplaySelect = $('.btn-display-select');
+			var btnDisplayInsert = $('.btn-display-insert');
+			var btnDisplayUpdate = $('.btn-display-update');
+			var btnDisplayDelete = $('.btn-display-delete');
+			var btnDisplayCustom = $('.btn-display-custom');
+			var btnAddChain      = $('.btn-add-chain');
+			var stringWhere      = '';
+			var flagWhere        = '';
+			var space            = '';
+
+
+
+			btnAddTable.on('click',function(){//handle for ADD TABLE
 				if(listTable.val() !== ''){
 					getListField(listTable.val());//ajax to create template table list Field
-				}	
-			})
+				}
+				// notEasyAutoComplete(listTable);
+			})//end
 
-			btnDisplaySelect.on('click',function(){
+			btnDisplaySelect.on('click',function(){//hande for SELECT
 					var listNameChecked = getListNameChecked();
 					var stringSql       = createStringSql(listNameChecked,"select");
+					if(stringWhere !== '' && flagWhere !== ''){
+						stringWhere = '';
+						flagWhere   = '';
+					}
 					$(".display-sql").html(stringSql);
-			})//hande for SELECT
+			})//end
 
-			btnDisplayInsert.on('click',function(){
+			btnDisplayInsert.on('click',function(){//hande for INSERT
 					var listNameChecked = getListNameChecked();
 					var stringSql       = createStringSql(listNameChecked,"insert");
-					$(".display-sql").html(stringSql);
-			})//hande for INSERT
 
-			btnDisplayUpdate.on('click',function(){
+					$(".display-sql").html(stringSql);
+			})//end
+
+			btnDisplayUpdate.on('click',function(){//hande for UPDATE
 					var listNameChecked = getListNameChecked();
 					var stringSql       = createStringSql(listNameChecked,"update");
+					if(stringWhere !== ''){
+						stringWhere = '';
+					}
 					$(".display-sql").html(stringSql);
-			})//hande for UPDATE
+			})//end
 
-			btnDisplayDelete.on('click',function(){
+			btnDisplayDelete.on('click',function(){//hande for DELETE
 					var listNameChecked = getListNameChecked();
 					var stringSql       = createStringSql(listNameChecked,"delete");
+					if(stringWhere !== ''){
+						stringWhere = '';
+					}
 					$(".display-sql").html(stringSql);
-			})//hande for DELETE
+			})//end
+
+			btnAddChain.on('click',function(){//handle for ADD CHAIN
+				var conName     = $(".conditional-name").val();
+				var conValue    = $(".conditional-value").val();
+				if(conName !== '' && conValue !== ''){
+					if(flagWhere === ''){// first time assign '->where'
+						var charWhere = '->where';
+						space         = 17;
+						flagWhere     = 'notNull';
+					}else{// not first time will not '->where'
+						var charWhere = '';
+						space         = 24;
+					}//end
+
+					if(conName === "where"){//handle with WHERE statement
+						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->equalTo(") + conValue + mP(")");
+					}//end
+					if(conName === "whereor"){//handle with WHEREOR statement
+						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->equalTo(") + conValue + mP(")");
+					}//end
+
+					$(".conditional-area").html(stringWhere);
+				}
+			})//end
 
 		})();
 
@@ -120,43 +162,56 @@
 			switch(type){
 				case "insert":
 					html = mK("public function") + mP(" addItem(") + mV("$data") + mP(" = ") + "null" + mP(",") + mV("$options") + mP(" = ") + "null" + mP("\)\{") + "<br/>";
-						html += rPt() + mV("$this") + mP("->_tableGateway->insert(") + mV("$select") + mP(")") + mP(";") + "<br/>";
+						html += rPt() + mV("$this") + mP("->_tableGateway->insert(") + mV("$data") + mP(")") + mP(";") + "<br/>";
 						html += rPt() + mK("return ") + mV("$result") + mP(";") + "<br/>";
 					html += mP("}") + "<br/>";
 					break;
 				case "update":
 					html = mK("public function") + mP(" updateItem(") + mV("$data") + mP(" = ") + "null" + mP(",") + mV("$options") + mP(" = ") + "null" + mP("\)\{") + "<br/>";
-						html += rPt() + mV("$this") + mP("->_tableGateway->update(") + mV("$select") + mP(")") + mP(";") + "<br/>";
+						html += rPt() + mV("$this") + mP("->_tableGateway->update(") + mV("$data") + mP(")") + mP(";") + "<br/>";
 						html += rPt() + mK("return ") + mV("$result") + mP(";") + "<br/>";
 					html += mP("}") + "<br/>";
 					break;
 				case "delete":
 					html = mK("public function") + mP(" deleteItem(") + mV("$data") + mP(" = ") + "null" + mP(",") + mV("$options") + mP(" = ") + "null" + mP("\)\{") + "<br/>";
-						html += rPt() + mV("$this") + mP("->_tableGateway->delete(") + mV("$select") + mP(")") + mP(";") + "<br/>";
+						html += rPt() + mV("$this") + mP("->_tableGateway->delete(") + mV("$data") + mP(")") + mP(";") + "<br/>";
 						html += rPt() + mK("return ") + mV("$result") + mP(";") + "<br/>";
 					html += mP("}") + "<br/>";
 					break;
-				default : 
+				default :
 					html = mK("public function") + mP(" listItem(") + mV("$data") + mP(" = ") + "null" + mP(",") + mV("$options") + mP(" = ") + "null" + mP("\)\{") + "<br/>";
 						html += rPt() + mV("$result") + mP(" = ") + mV("$this") + mP("->_tableGateway->select(") + mK("function") + mP("(") + mK("Select ") + mV("$select") + mP(")") + mK("use") + mP("(") + mV("$data") + mP(")") + mP("{") + "<br/>";
-							html += rPt(2) + mV("$select") + mP("->columns(") + listName + mP(")") + mP(";") + "<br/>";
+							html += rPt(10) + mV("$select") + mP("->columns(") + listName + mP(")") + "<span class='conditional-area'></span>" + mP(";") + "<br/>";
 						html += rPt() + mP("})->toArray();") + "<br/>";
 						html += rPt() + mK("return ") + mV("$result") + mP(";") + "<br/>";
 					html += mP("}") + "<br/>";
 			}
-			
-			var xhtml = "<code>" + html + "</code>"; 
-			
-			return xhtml;
-		}
+
+			return "<code>" + html + "</code>";
+		}//end createStringSql
+
+		var notEasyAutoComplete = function(listTable){
+			$( "#autocomplete-field" ).autocomplete({
+				source: listTable
+			});
+		}//end notEasyAutoComplete
+
+		var resetWhere = function(stringWhere,charWhere){
+			if(stringWhere !== '' && charWhere !== ''){
+				stringWhere = '';
+				charWhere   = '';
+			}
+		}//end resetWhere
+
+
 
 		var getListNameChecked = function(){
 			var tmpListNameChecked = [];
 			$('input[name|="check"]').each(function(val){
 					if($(this).is(":checked")){
 						var name = $(this).attr('name');
-						name = name.replace("check-","");
-						tmpListNameChecked.push("'" + name + "'"); 
+						name     = name.replace("check-","");
+						tmpListNameChecked.push("'" + name + "'");
 					}
 			})
 			return tmpListNameChecked;
@@ -164,10 +219,11 @@
 
 		var getListField = function(nameTable = ''){
 			$.ajax({
-				url  : $("[name =urlGetField]").val(),
-				type : "POST",
+				url      : $("[name =urlGetField]").val(),
+				type     : "POST",
 				dataType : 'json',
 				data : {
+					action    : "view",
 					nameTable : nameTable
 				},
 				success : function(data){
@@ -178,11 +234,11 @@
 						$(".field-list").show();
 
 						$(".display-name-table").html('<h3>[' + nameTable + '] Table</h3>')
-						
+
 						for (var key in listField) {
 							if (listField.hasOwnProperty(key)) {
 								html += '<tr>' +
-													'<th scope="row"><input type="checkbox"  class="second" name="check-'+ key +'"></th>' + 
+													'<th scope="row"><input type="checkbox"  class="second" name="check-'+ key +'"></th>' +
 													'<td>'+ key +'</td>' +
 													'<td>'+ listField[key] +'</td>' +
 												'</tr>' ;
@@ -190,7 +246,8 @@
 						}
 
 						$(".display-field").html(html);
-						
+						notEasyAutoComplete(data.listFieldLiteral);
+
 						/** FUCTION */
 						checkAll();
 					}
@@ -202,7 +259,7 @@
 			$(".second").on('click',function() {
 					$("#selectall").prop("checked", false);
 			});
-			
+
 			$("#selectall").on('click',function() {
 					$(".second").prop("checked", $("#selectall").prop("checked"));
 			})
@@ -235,8 +292,8 @@
 			}
 		}
 
-		var rPt = function(level = 1){
-			return "&nbsp;".repeat(level * 5);
+		var rPt = function(step = 5){
+			return "&nbsp;".repeat(step);
 		}
 		/**************************************/
 

@@ -1,7 +1,7 @@
 .container .box{
 	background-color: #e2eecf;
 	padding: 5px 0;
-	margin-bottom: 20px; 
+	margin-bottom: 20px;
 }
 
 .row .removeVal{
@@ -76,7 +76,7 @@ i{
 
 .tab:hover{
 	cursor: pointer;
-	background-color:#64DDBB; 
+	background-color:#64DDBB;
 }
 
 .php-keyword{
@@ -195,7 +195,7 @@ ul{
 
 .openElement:hover,.removeElement:hover{
 	cursor: pointer;
-	color:#64DDBB; 
+	color:#64DDBB;
 }
 
 .requiredElement,.disableHtml{
@@ -210,7 +210,7 @@ ul{
 #lazyLabelAddNewElement{
 	position: fixed;
 	width: 70px;
-	right: 0; 	 
+	right: 0;
 	z-index: 100;
 	opacity: 0.5;
 	display: none;
@@ -251,7 +251,7 @@ ul{
 	display: block;
 	bottom : 354px;
 	width : 135px;
-	border: rgba(0, 0, 255, 0.37) 1px solid;	
+	border: rgba(0, 0, 255, 0.37) 1px solid;
 }
 
 .input-small{
@@ -271,5 +271,5 @@ ul{
 
 .glyphicon-pencil:hover{
 	cursor: pointer;
-	color:blue;
+	color: blue;
 }
