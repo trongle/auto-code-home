@@ -50,12 +50,14 @@
 			<div class="row">
 				<div class="col-md-3">
 					<select class="conditional-name form-control">
-						<option value="where">Where</option>
+						<option value="where=">Where =</option>
+						<option value="where!=">Where !=</option>
+						<option value="wherein">Where in</option>
 						<option value="whereor">WhereOr</option>
 					</select>
 				</div>
 				<div class="col-md-5">
-					<input id="autocomplete-field" class="form-control conditional-value"></input>
+					<input id="autocomplete-field" placeholder="id,1" class="form-control conditional-value"></input>
 				</div>
 				<button class="btn-add-chain btn btn-info btn-sm" type="button">ADD CHAIN</button>
 				<button class="btn-add-new btn btn-info btn-sm" type="button">ADD NEW</button>
@@ -91,7 +93,6 @@
 				if(listTable.val() !== ''){
 					getListField(listTable.val());//ajax to create template table list Field
 				}
-				// notEasyAutoComplete(listTable);
 			})//end
 
 			btnDisplaySelect.on('click',function(){//hande for SELECT
@@ -142,11 +143,16 @@
 						space         = 24;
 					}//end
 
-					if(conName === "where"){//handle with WHERE statement
+					conValue  = convertToQuotes(conValue);
+
+					if(conName === "where="){//handle with WHERE = statement
 						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->equalTo(") + conValue + mP(")");
 					}//end
-					if(conName === "whereor"){//handle with WHEREOR statement
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->equalTo(") + conValue + mP(")");
+					if(conName === "where!="){//handle with WHERE != statement
+						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->notEqualTo(") + conValue + mP(")");
+					}//end
+					if(conName === "wherein"){//handle with WHERE in statement
+						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->in(") + conValue + mP(")");
 					}//end
 
 					$(".conditional-area").html(stringWhere);
@@ -294,6 +300,13 @@
 
 		var rPt = function(step = 5){
 			return "&nbsp;".repeat(step);
+		}
+
+		var convertToQuotes = function(string){
+			string    = string.split(",");
+			string[0] = '"' + string[0] + '"';
+			string    = string.join(",");
+			return string;
 		}
 		/**************************************/
 
