@@ -104,7 +104,7 @@
 
 			sltConditionalName.on('change',function(){// change Placeholder & Title  when select Conditional
 				switch ($(this).val()) {
-					case "whereliteral":
+					case "->literal":
 						$("#autocomplete-field").attr("placeholder","id = 69");
 						$("#autocomplete-field").attr("title","id = 69");
 						break;
@@ -184,7 +184,14 @@
 						space         = 24;
 					}//end
 
-					stringWhere += handleWhereStatement(conName,conValue,charWhere,space);
+					var tmpString = handleWhereStatement(conName,conValue,charWhere,space);
+					if(tmpString.search(/ironman/) != -1 ){//if found 'ironman' in the string (With case)
+							var stringWith         = tmpString.replace(/ironman/,'');
+							var stringSearchUnnest = stringWhere.search(/->UNNEST/);
+							stringWhere = stringWhere.substr(0,stringSearchUnnest - 20) + "<br/>" + stringWith + "<br/>" + rPt(17) +  stringWhere.substr(stringSearchUnnest - 24);
+					}else{//if not found (other cases)
+							stringWhere += handleWhereStatement(conName,conValue,charWhere,space);
+					}//end
 
 					$(".conditional-area").html(stringWhere);
 				}
@@ -308,32 +315,24 @@
 
 		var handleWhereStatement = function (conName = '',conValue = '',charWhere = '',space = ''){
 			var stringWhere = '';
+			var flagCase    = '';
+
 
 			if(conValue.search(/,or/) != -1){//if found 'or'
-				// if(nest === '' && unnest === ''){//first time set 'nest' and 'unnest'
-					conValue = conValue.replace(/,or/,"");
-
-					nest      = mP("->NEST") + "<br/>" + rPt(space + 7);
-					unnest    = "<br/>" + rPt(space) + mP("->UNNEST");
-
-					charWhere = charWhere + nest;
+				conValue = conValue.replace(/,or/,"");
+				flagCase = "or";
+			}else if(conValue.search(/,with/) != -1){
+				conValue = conValue.replace(/,with/,"");
+				flagCase = 'with';
+				nest     = '';
+				unnest   = '';
 			}else{//else if not found 'or'
-					nest   = '';
-					unnest = '';
-			}//end
-
-			if(conValue.search(/,with/) != -1){//if found 'with'
-				// if(nest === '' && unnest === ''){//first time set 'nest' and 'unnest'
-					conValue = conValue.replace(/,with/,"");
-
-					nest      = mP("->NEST") + "<br/>" + rPt(space + 7);
-					unnest    = "<br/>" + rPt(space) + mP("->UNNEST");
-
-					charWhere = charWhere + nest;
+				nest   = '';
+				unnest = '';
 			}//end
 
 			if(conValue.search(/,/) != -1){ //if found ',' ---> for WHERE * ,but LITERAL
-				if(conName === "wherein" || conName === "wherenotin"){ //check to handle conditionalValue
+				if(conName === "wherein" || conName === "wherenotin"){//check to handle conditionalValue
 					conValue  = convertToQuotes(conValue,"in");
 				}else{
 					conValue  = convertToQuotes(conValue);
@@ -342,7 +341,17 @@
 				conValue = "'" + conValue + "'";
 			}//end
 
-			return stringWhere = "<br/>" + rPt(space) + mP(charWhere + conName) + conValue + mP(")") + unnest;
+			if(flagCase === 'or'){
+				nest      = mP("->NEST") + "<br/>" + rPt(space + 7);
+				unnest    = "<br/>" + rPt(space) + mP("->UNNEST");
+
+				charWhere = charWhere + nest;
+			}else if(flagCase === 'with'){
+				return "ironman" + rPt(7) + mP("->or" + charWhere + conName) + conValue + mP(")") + unnest;
+			}
+
+			// And after all, we have a string YEAH!
+			return "<br/>" + rPt(space) + mP(charWhere + conName) + conValue + mP(")") + unnest;
 
 		}
 
