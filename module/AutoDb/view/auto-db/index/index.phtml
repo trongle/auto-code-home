@@ -26,19 +26,20 @@
 
 <section class="field-list" style="display: none">
 	<h3 class="display-name-table">[filters] Table</h3>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					<input type="checkbox" id="selectall" name="all">
-				</th>
-				<th>Field</th>
-				<th>Type</th>
-			</tr>
-		</thead>
-		<tbody class="display-field"></tbody>
-	</table>
-
+	<div id="table-wrapper">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>
+						<input type="checkbox" id="selectall" name="all">
+					</th>
+					<th>Field</th>
+					<th>Type</th>
+				</tr>
+			</thead>
+			<tbody class="display-field"></tbody>
+		</table>
+	</div>
 	<div class="row">
 		<div class="col-md-4">
 			<button class="btn-display-select btn btn-info btn-sm" type="button">SELECT</button>
@@ -50,31 +51,33 @@
 			<div class="row">
 				<div class="col-md-3">
 					<select class="conditional-name form-control">
-						<option value="where=">Where =</option>
-						<option value="where!=">Where !=</option>
-						<option value="wherein">Where In</option>
-						<option value="wherenotin">Where Not in</option>
-						<option value="wherebetween">Where Between</option>
-						<option value="wherenotbetween">Where Not between</option>
-						<option value="where>">Where ></option>
-						<option value="where>=">Where >=</option>
-						<option value="where<">Where <</option>
-						<option value="where<=">Where <=</option>
-						<option value="wherelike">Where Like</option>
-						<option value="wherenotlike">Where Not like</option>
+						<option value="->equal(">Where =</option>
+						<option value="->notEqual(">Where !=</option>
+						<option value="->in(">Where In</option>
+						<option value="->notIn(">Where Not in</option>
+						<option value="->between(">Where Between</option>
+						<option value="->notBetween(">Where Not between</option>
+						<option value="->greaterThan(">Where ></option>
+						<option value="->greaterThanOrEqualTo(">Where >=</option>
+						<option value="->lessThan(">Where <</option>
+						<option value="->lessThanOrEqual(">Where <=</option>
+						<option value="->like(">Where Like</option>
+						<option value="->notLike(">Where Not like</option>
+						<option value="->literal(">Where Literal</option>
 					</select>
 				</div>
 				<div class="col-md-5">
-					<input id="autocomplete-field" placeholder="id,1" class="form-control conditional-value"></input>
+					<input id="autocomplete-field" placeholder="id,69" class="form-control conditional-value"></input>
 				</div>
 				<button class="btn-add-chain btn btn-info btn-sm" type="button">ADD CHAIN</button>
 				<button class="btn-add-new btn btn-info btn-sm" type="button">ADD NEW</button>
-						</div>
 			</div>
+		</div>
 	</div>
 </section>
 
-<section class="display-sql code2">
+
+<section class="display-sql code2" id="auto-db">
 
 </section>
 <script type="text/javascript">
@@ -82,6 +85,9 @@
 	"use strict";
 
 	$(document).ready(function(){
+		new Clipboard('.btn');
+		var nest               = '';
+		var unnest             = '';
 		(function(){
 			var btnAddTable        = $('.add-table');
 			var listTable          = $('.list-table');
@@ -96,27 +102,32 @@
 			var flagWhere          = '';
 			var space              = '';
 
-			sltConditionalName.on('change',function(){
+			sltConditionalName.on('change',function(){// change Placeholder & Title  when select Conditional
 				switch ($(this).val()) {
 					case "whereliteral":
-						$("#autocomplete-field").attr("placeholder","id = 1");
+						$("#autocomplete-field").attr("placeholder","id = 69");
+						$("#autocomplete-field").attr("title","id = 69");
 						break;
-					case "wherein":
-					case "wherenotin":
-						$("#autocomplete-field").attr("placeholder","id,1,2,3,4");
+					case "->in(":
+					case "->notIn(":
+						$("#autocomplete-field").attr("placeholder","id,6,7,8,9");
+						$("#autocomplete-field").attr("title","id,6,7,8,9");
 						break;
-					case "wherebetween":
-					case "wherenotbetween":
-						$("#autocomplete-field").attr("placeholder","id,1,9");
-						break;
-					case "wherelike":
-					case "wherenotlike":
+					case "->between(":
+					case "->notBetween(":
+						$("#autocomplete-field").attr("placeholder","id,6,9");
+						$("#autocomplete-field").attr("title","id,6,9");
+				break;
+					case "->like(":
+					case "->notLike(":
 						$("#autocomplete-field").attr("placeholder","id,'%jav%'");
-						break;
+						$("#autocomplete-field").attr("title","id,'%jav%'");
+				break;
 					default:
-					$("#autocomplete-field").attr("placeholder","id,1");
+					$("#autocomplete-field").attr("placeholder","id,69");
+					$("#autocomplete-field").attr("title","id,69");
 				}
-			})
+			})//end
 
 
 			btnAddTable.on('click',function(){//handle for ADD TABLE
@@ -173,58 +184,7 @@
 						space         = 24;
 					}//end
 
-					if(conName === "where="){//handle with WHERE = statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->equalTo(") + conValue + mP(")");
-					}//end
-					if(conName === "whereliteral"){//handle with WHERE = statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->literal(") + conValue + mP(")");
-					}//end
-					if(conName === "where!="){//handle with WHERE != statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->notEqualTo(") + conValue + mP(")");
-					}//end
-					if(conName === "wherein"){//handle with WHERE IN statement
-						conValue  = convertToQuotes(conValue,"in");
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->in(") + conValue + mP(")");
-					}//end
-					if(conName === "wherenotin"){//handle with WHERE NOT IN statement
-						conValue  = convertToQuotes(conValue,"in");
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->notIn(") + conValue + mP(")");
-					}//end
-					if(conName === "wherebetween"){//handle with WHERE BETWEEN statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->between(") + conValue + mP(")");
-					}//end
-					if(conName === "wherenotbetween"){//handle with WHERE NOT BETWEEN statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->notBetween(") + conValue + mP(")");
-					}//end
-					if(conName === "wherelike"){//handle with WHERE LIKE statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->like(") + conValue + mP(")");
-					}//end
-					if(conName === "wherenotlike"){//handle with WHERE NOT LIKE statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->notLike(") + conValue + mP(")");
-					}//end
-					if(conName === "where>"){//handle with WHERE GREATER THAN statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->greaterThan(") + conValue + mP(")");
-					}//end
-					if(conName === "where<"){//handle with WHERE LESS THAN statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->lessThan(") + conValue + mP(")");
-					}//end
-					if(conName === "where<="){//handle with WHERE LESS THAN OR EQUAL TO statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->lessThanOrEqualTo(") + conValue + mP(")");
-					}//end
-					if(conName === "where>="){//handle with WHERE GREATER THAN OR EQUAL statement
-						conValue  = convertToQuotes(conValue);
-						stringWhere += "<br/>" + rPt(space) + mP(charWhere + "->greaterThanOrEqualTo(") + conValue + mP(")");
-					}//end
+					stringWhere += handleWhereStatement(conName,conValue,charWhere,space);
 
 					$(".conditional-area").html(stringWhere);
 				}
@@ -264,7 +224,9 @@
 					html += mP("}") + "<br/>";
 			}
 
-			return "<code>" + html + "</code>";
+			return '<div class="code-area"><code><button class="btn pull-right copy-all" type="button" data-clipboard-target="#auto-db">'
+				+ '<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15"></button>'
+				+ html + '</code></div>';
 		}//end createStringSql
 
 		var notEasyAutoComplete = function(listTable){
@@ -279,8 +241,6 @@
 				charWhere   = '';
 			}
 		}//end resetWhere
-
-
 
 		var getListNameChecked = function(){
 			var tmpListNameChecked = [];
@@ -343,55 +303,96 @@
 		}// end checkAll
 
 		/*************************************
+		 * Handle Statement
+		 *************************************/
+
+		var handleWhereStatement = function (conName = '',conValue = '',charWhere = '',space = ''){
+			var stringWhere = '';
+
+			if(conValue.search(/,or/) != -1){//if found 'or'
+				// if(nest === '' && unnest === ''){//first time set 'nest' and 'unnest'
+					conValue = conValue.replace(/,or/,"");
+
+					nest      = mP("->NEST") + "<br/>" + rPt(space + 7);
+					unnest    = "<br/>" + rPt(space) + mP("->UNNEST");
+
+					charWhere = charWhere + nest;
+			}else{//else if not found 'or'
+					nest   = '';
+					unnest = '';
+			}//end
+
+			if(conValue.search(/,with/) != -1){//if found 'with'
+				// if(nest === '' && unnest === ''){//first time set 'nest' and 'unnest'
+					conValue = conValue.replace(/,with/,"");
+
+					nest      = mP("->NEST") + "<br/>" + rPt(space + 7);
+					unnest    = "<br/>" + rPt(space) + mP("->UNNEST");
+
+					charWhere = charWhere + nest;
+			}//end
+
+			if(conValue.search(/,/) != -1){ //if found ',' ---> for WHERE * ,but LITERAL
+				if(conName === "wherein" || conName === "wherenotin"){ //check to handle conditionalValue
+					conValue  = convertToQuotes(conValue,"in");
+				}else{
+					conValue  = convertToQuotes(conValue);
+				}//end
+			}else{// for WHERE LITERAL
+				conValue = "'" + conValue + "'";
+			}//end
+
+			return stringWhere = "<br/>" + rPt(space) + mP(charWhere + conName) + conValue + mP(")") + unnest;
+
+		}
+
+		/*************************************
 		 * Utilities
 		 *************************************/
-		var mK = function(text = ''){
+		function mK(text = ''){
 			if(text !== ''){
 				return "<span class='php-keyword'>" + text +"</span>";
 			}
 		}
 
-		var mV = function(text = ''){
+		function mV(text = ''){
 			if(text !== ''){
 				return "<span class='php-variable'>" + text +"</span>";
 			}
 		}
 
-		var mP = function(text = ''){
+		function mP(text = ''){
 			if(text !== ''){
 				return "<span class='php-plain'>" + text +"</span>";
 			}
 		}
 
-		var mC = function(text = ''){
+		function mC(text = ''){
 			if(text !== ''){
 				return "<span class='php-comment'>" + text +"</span>";
 			}
 		}
 
-		var rPt = function(step = 5){
+		function rPt(step = 5){
 			return "&nbsp;".repeat(step);
 		}
 
 		var convertToQuotes = function(string,style = 'normal'){
 			var newString = [];
+
 			string        = string.split(",");
-			newString.push('"' + string[0] + '"');
+			newString.push('"' + string[0] + '"');//
 
 			string.shift()
 			if(style === 'in'){// handle for IN and NOT IN predicate
 				string = string.join(",");
 				newString.push(mP("array(") + string + mP(")"));
-			}
+			}//end
 
-			if(style === 'normal'){
+			if(style === 'normal'){ //handle for others predicate
 				newString.push(string);
-			}
+			}//end
 
-			// if(style === 'between'){// handle for BETWEEN and NOT BETWEEN predicate
-			// 	string      = string.shift().join(",");
-			// 	newString[] = mP("array(") + string + mP(")");
-			// }
 			return newString.join(",");
 		}
 		/**************************************/

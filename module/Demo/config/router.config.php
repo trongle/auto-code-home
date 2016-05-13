@@ -1,11 +1,11 @@
 <?php
-$demo_user = array(
+$demo_db = array(
     "type"=> "Literal",
     "options" => array(
-        "route" => "/demo",
+        "route" => "/demo/db",
         "defaults" => array(
             "__NAMESPACE__" => "Demo\Controller",
-            "controller"    => "Demo\Controller\User",
+            "controller"    => "Demo\Controller\Db",
             "action"        => "index"
         )
     ),
@@ -52,8 +52,8 @@ $city = array(
 return array(
     "router" => array(
         "routes" => array(
-            "demo_user" => $demo_user,
-            'city'      => $city
+            "demo_db" => $demo_db,
+            'city'    => $city
         )
     )
 );

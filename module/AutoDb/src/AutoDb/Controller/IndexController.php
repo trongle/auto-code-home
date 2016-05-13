@@ -14,17 +14,13 @@ class IndexController extends AbstractActionController
 	public function __construct(){
 		//add script
 		$this->_script[] = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-boilerplate/4.1.0/jquery.boilerplate.min.js';
+		$this->_script[] = 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.10/clipboard.min.js';
 		$this->_script[] = URL_JS . '/jquery-ui.js';
 	}
 
 	public function indexAction(){
 		$this->addScript();
 
-		$listTableNames = $this->getListTableName();
-
-		return array(
-			'listTableNames' => $listTableNames
-		);
 	}
 
 	public function getListFieldAction(){
@@ -77,7 +73,7 @@ class IndexController extends AbstractActionController
 	}
 
 	protected function getMetaData(){
-		$adapter        = $this->getServiceLocator()->get("dbconfig");
+		$adapter        = $this->getServiceLocator()->get("db_demo");
 		return new Metadata($adapter);
 	}
 }

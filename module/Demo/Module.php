@@ -40,7 +40,7 @@ class Module implements AutoloaderProviderInterface
         return array_merge(
 			include __DIR__."/config/module.config.php",
 			include __DIR__."/config/router.config.php"
-		);	
+		);
     }
 
     public function onBootstrap(MvcEvent $e)
@@ -79,15 +79,15 @@ class Module implements AutoloaderProviderInterface
 
     public function getServiceConfig(){
         return array(
-            "factories" => array(          
+            "factories" => array(
                 "Database\Model\User" => function($sm){
                         $tableGateway = $this->getTableGateway($sm, 'users',new User());
                         return  new UserTable($tableGateway);
-                },    
+                },
                 "Database\Model\Group" => function($sm){
                         $tableGateway = $this->getTableGateway($sm, 'groups',new Group());
                         return  new GroupTable($tableGateway);
-                },     
+                },
                 "Database\Model\City" => function($sm){
                         $tableGateway = $this->getTableGateway($sm, 'cities',new City());
                         return  new CityTable($tableGateway);
@@ -99,7 +99,7 @@ class Module implements AutoloaderProviderInterface
                 "Database\Model\Ward" => function($sm){
                         $tableGateway = $this->getTableGateway($sm, 'wards',new Ward());
                         return  new WardTable($tableGateway);
-                }
+                },
             ),
             "aliases" => array(
                 "UserTable"     => "Database\Model\User",

@@ -1,7 +1,7 @@
-<?php  
-echo "<pre>";
-print_r($infoForm);
-echo "</pre>";
+<?php
+// echo "<pre>";
+// print_r($infoForm);
+// echo "</pre>";
 ?>
 <div class="container">
 	<h1>[<?php echo $infoForm->name ?>]</h1>
@@ -11,7 +11,7 @@ echo "</pre>";
 			<div class="row">
 
 				<div class="col-md-6">
-					<div class="form-group">					
+					<div class="form-group">
 						<label for="type">Name Class Form</label>
 						<input type="text" width="360" value="" class="form-control" name="inputNameClassForm" />
 						<!-- class="hide alert alert-danger alert-dismissable" -->
@@ -19,9 +19,9 @@ echo "</pre>";
                         	Nhập tên Class Form để tiếp tục !
                         </p>
 					</div>
-				</div>		
+				</div>
 				<div class="col-md-6">
-					<div class="form-group">					
+					<div class="form-group">
 						<label for="type">Name Class Filter</label>
 						<input type="text" value="" class="form-control" name="inputNameClassFilter"/>
 						<!-- class="hide alert alert-danger alert-dismissable" -->
@@ -29,8 +29,8 @@ echo "</pre>";
                         	Nhập tên Class Filter để tiếp tục !
                         </p>
 					</div>
-				</div>			
-				
+				</div>
+
 			</div>
 		</div>
 		<div class="col-md-4 col-md-offset-5">
@@ -45,7 +45,7 @@ echo "</pre>";
 		<!-- CODE FOR CLASS FORM -->
 		<div class="col-md-6 ">
 			<h3>Code For Class Form</h3>
-			<button class="btn pull-right" type="button" data-clipboard-target="#classForm">
+			<button class="btn copy-all pull-right" type="button" data-clipboard-target="#classForm">
 				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
 			</button>
 			<div  name="code" class="form-control code" >
@@ -96,11 +96,11 @@ echo "</pre>";
 			</div>
 		</div>
 		<!-- END CODE FOR CLASS FORM -->
-		
+
 		<!-- CODE FOR VALIDATE AND FILTER -->
 		<div class="col-md-6 ">
 			<h3>Code For Class Filter And Validate</h3>
-			<button class="btn pull-right" type="button" data-clipboard-target="#validateFilter">
+			<button class="btn copy-all pull-right " type="button" data-clipboard-target="#validateFilter">
 				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
 			</button>
 			<div  name="code" class="form-control code">
@@ -125,7 +125,7 @@ echo "</pre>";
 		<!-- CODE FOR MODULE.PHP -->
 		<div class="col-md-6">
 			<h3>Code For Module(Module.php)</h3>
-			<button class="btn pull-right" type="button" data-clipboard-target="#module">
+			<button class="btn copy-all pull-right" type="button" data-clipboard-target="#module">
 				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
 			</button>
 			<div  name="code" class="form-control code">
@@ -135,8 +135,8 @@ echo "</pre>";
 					<br/>
 					<?php echo str_repeat("&nbsp;",5) ?><span class="php-keyword">public function</span> <span class="php-plain">getFormElementConfig(){</span><br/>
 				        <?php echo str_repeat("&nbsp;",10) ?><span class="php-keyword">return</span> <span class="php-plain">array(</span><br/>
-				            <?php echo str_repeat("&nbsp;",15) ?>"factories" <span class="php-plain">=> array(</span><br/>       
-				                <?php echo str_repeat("&nbsp;",20) ?><?php echo '"' . $infoForm->name .'"' ?> <span class="php-plain">=></span> <span class="php-keyword">function(</span><span class="php-variable">$sm</span><span class="php-plain">){</span><br/>            
+				            <?php echo str_repeat("&nbsp;",15) ?>"factories" <span class="php-plain">=> array(</span><br/>
+				                <?php echo str_repeat("&nbsp;",20) ?><?php echo '"' . $infoForm->name .'"' ?> <span class="php-plain">=></span> <span class="php-keyword">function(</span><span class="php-variable">$sm</span><span class="php-plain">){</span><br/>
 				                    <?php echo str_repeat("&nbsp;",25) ?><span class="php-variable">$form</span>   <span class="php-plain">=</span> <span class="php-keyword">new</span> <span class="php-plain class-form-name-module">;</span><br/>
 				                    <?php echo str_repeat("&nbsp;",25) ?><span class="php-variable">$form</span><span class="php-plain">->setInputFilter(</span><span class="php-keyword">new</span> <span class="php-plain "><span class="class-validate-filter-name-module"></span>);</span><br/>
 					                <?php echo str_repeat("&nbsp;",25) ?><span class="php-keyword">return</span> <span class="php-variable">$form</span><span class="php-plain">;</span><br/>
@@ -152,7 +152,7 @@ echo "</pre>";
 		<!-- CODE FOR ACTION(CONTROLLER) -->
 		<div class="col-md-6">
 			<h3>Code For Action(Controller)</h3>
-			<button class="btn pull-right" type="button" data-clipboard-target="#actionController">
+			<button class="btn copy-all pull-right" type="button" data-clipboard-target="#actionController">
 				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
 			</button>
 			<div  name="code" class="form-control code">
@@ -174,11 +174,11 @@ echo "</pre>";
 			</div>
 		</div>
 		<!-- END CODE FOR ACTION(CONTROLLER) -->
-		
+
 		<!-- CODE FOR VIEW -->
 		<div class="col-md-6">
 			<h3>Code For View</h3>
-			<button class="btn pull-right" type="button" data-clipboard-target="#view">
+			<button class="btn copy-all pull-right" type="button" data-clipboard-target="#view">
 				<img src="https://zenorocha.github.io/clipboard.js/assets/images/clippy.svg" width="13" height="15">
 			</button>
 			<div  name="code" class="form-control code">

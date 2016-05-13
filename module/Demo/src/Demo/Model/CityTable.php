@@ -8,7 +8,7 @@ use Zend\Db\TableGateway\TableGateway;
 
 class CityTable extends AbstractTableGateway{
 	protected $_tableGateway;
-	
+
 	public function __construct(TableGateway $tableGateway){
 		$this->_tableGateway = $tableGateway;
 		return $this;
@@ -16,12 +16,12 @@ class CityTable extends AbstractTableGateway{
 
 	public function listOptionOfSelect(){
 		$result =   $this->_tableGateway->select(function(Select $select){
-							$select->columns(array("city_name","city_id"))
-								   ->order(array("ordering ASC"));
-					})->toArray();
+			$select->columns(array("city_name","city_id"))
+				->order(array("ordering ASC"));
+			})->toArray();
 		$arr = [];
 
-		if(!empty($result)){	
+		if(!empty($result)){
 			foreach($result as $item){
 				$arr[$item['city_id']] = $item['city_name'];
 			}
@@ -30,21 +30,31 @@ class CityTable extends AbstractTableGateway{
 		return $arr;
 	}
 
-	public function listItem(){
-		$result =   $this->_tableGateway->select(function(Select $select){
-							$select->columns(array("city_name","city_id"))
-								   ->order(array("ordering ASC"));
-					})->toArray();
 
-		return $result;
+	public function listItem($data = null,$options = null){
+	     $result = $this->_tableGateway->select(function(Select $select)use($data){
+	          $select->columns(array('city_id','city_name','city_slug','ordering'))
+	                 ->where->notLike("city_name",'%Hà Nội%')
+	                        ->notEqualTo("city_id",65);
+	     })->toArray();
+	     return $result;
 	}
-        
-                
-                public function listItemById($id){
+
+	// public function listItem(){
+	// 	$result =   $this->_tableGateway->select(function(Select $select){
+	// 						$select->columns(array("city_name","city_id"))
+	// 							   ->order(array("ordering ASC"));
+	// 				})->toArray();
+	//
+	// 	return $result;
+	// }
+
+
+	public function listItemById($id){
 		$result =   $this->_tableGateway->select(function(Select $select) use($id){
-							$select->columns(array("city_name","city_id"))
-                                                                                                                            ->where(array("city_id" => $id ));
-					})->current();
+			$select->columns(array("city_name","city_id"))
+				->where(array("city_id" => $id ));
+			})->current();
 
 		return $result;
 	}

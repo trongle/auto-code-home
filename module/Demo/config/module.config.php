@@ -3,10 +3,11 @@ return array(
     'controllers' => array(
         'invokables' => array(
             // 'Demo\Controller\Index' => 'Demo\Controller\IndexController',
-            'Demo\Controller\User'  => 'Demo\Controller\UserController',
-            'Demo\Controller\City'  => 'Demo\Controller\CityController',
+            'Demo\Controller\User' => 'Demo\Controller\UserController',
+            'Demo\Controller\City' => 'Demo\Controller\CityController',
+            'Demo\Controller\Db'   => 'Demo\Controller\DbController',
         ),
-    ),   
+    ),
     'view_manager' => array(
         "doctype"                  => "HTML5",
         "display_not_found_reason" => true,
@@ -20,7 +21,7 @@ return array(
 		    'error/index'             => __DIR__ . '/../view/error/index.phtml',
 		),
         'strategies' => array (
-            'ViewJsonStrategy' 
+            'ViewJsonStrategy'
         ),
         "default_template_suffix" => "phtml",
         "layout"                  => "layout/layout"
