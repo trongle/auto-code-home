@@ -51,8 +51,8 @@
 			<div class="row">
 				<div class="col-md-3">
 					<select class="conditional-name form-control">
-						<option value="->equal(">Where =</option>
-						<option value="->notEqual(">Where !=</option>
+						<option value="->equalTo(">Where =</option>
+						<option value="->notEqualTo(">Where !=</option>
 						<option value="->in(">Where In</option>
 						<option value="->notIn(">Where Not in</option>
 						<option value="->between(">Where Between</option>
@@ -67,7 +67,7 @@
 					</select>
 				</div>
 				<div class="col-md-5">
-					<input id="autocomplete-field" placeholder="id,69" class="form-control conditional-value"></input>
+					<input id="autocomplete-field" placeholder="id,69,[or|with]" class="form-control conditional-value"></input>
 				</div>
 				<button class="btn-add-chain btn btn-info btn-sm" type="button">ADD CHAIN</button>
 				<button class="btn-add-new btn btn-info btn-sm" type="button">ADD NEW</button>
@@ -105,27 +105,27 @@
 			sltConditionalName.on('change',function(){// change Placeholder & Title  when select Conditional
 				switch ($(this).val()) {
 					case "->literal":
-						$("#autocomplete-field").attr("placeholder","id = 69");
-						$("#autocomplete-field").attr("title","id = 69");
+						$("#autocomplete-field").attr("placeholder","id = 69,[or|with]");
+						$("#autocomplete-field").attr("title","id = 69,[or|with]");
 						break;
 					case "->in(":
 					case "->notIn(":
-						$("#autocomplete-field").attr("placeholder","id,6,7,8,9");
-						$("#autocomplete-field").attr("title","id,6,7,8,9");
+						$("#autocomplete-field").attr("placeholder","id,1,2,3,4,[or|with]");
+						$("#autocomplete-field").attr("title","id,1,2,3,4,[or|with]");
 						break;
 					case "->between(":
 					case "->notBetween(":
-						$("#autocomplete-field").attr("placeholder","id,6,9");
-						$("#autocomplete-field").attr("title","id,6,9");
+						$("#autocomplete-field").attr("placeholder","id,6,9,[or|with]");
+						$("#autocomplete-field").attr("title","id,6,9,[or|with]");
 				break;
 					case "->like(":
 					case "->notLike(":
-						$("#autocomplete-field").attr("placeholder","id,'%jav%'");
-						$("#autocomplete-field").attr("title","id,'%jav%'");
+						$("#autocomplete-field").attr("placeholder","id,'%lorem%',[or|with]");
+						$("#autocomplete-field").attr("title","id,'%lorem%',[or|with]");
 				break;
 					default:
-					$("#autocomplete-field").attr("placeholder","id,69");
-					$("#autocomplete-field").attr("title","id,69");
+					$("#autocomplete-field").attr("placeholder","id,69,[or|with]");
+					$("#autocomplete-field").attr("title","id,69,[or|with]");
 				}
 			})//end
 

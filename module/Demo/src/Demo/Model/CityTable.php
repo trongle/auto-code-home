@@ -30,24 +30,25 @@ class CityTable extends AbstractTableGateway{
 		return $arr;
 	}
 
-
-	public function listItem($data = null,$options = null){
-	     $result = $this->_tableGateway->select(function(Select $select)use($data){
-	          $select->columns(array('city_id','city_name','city_slug','ordering'))
-	                 ->where->notLike("city_name",'%Hà Nội%')
-	                        ->notEqualTo("city_id",65);
-	     })->toArray();
-	     return $result;
-	}
-
-	// public function listItem(){
-	// 	$result =   $this->_tableGateway->select(function(Select $select){
-	// 						$select->columns(array("city_name","city_id"))
-	// 							   ->order(array("ordering ASC"));
-	// 				})->toArray();
-	//
-	// 	return $result;
+	// public function listItem($data = null,$options = null){
+  //    $result = $this->_tableGateway->select(function(Select $select)use($data){
+  //         $select->columns(array('city_id','city_name','city_slug','is_focus','ordering','is_deleted'));
+  //         $select->where->NEST
+  //                       ->equalTo("city_id",2)
+  //                       ->or->equalTo("city_id",4)
+  //                ->UNNEST;
+  //    })->toArray();
+  //    return $result;
 	// }
+
+	public function listItem(){
+		$result =   $this->_tableGateway->select(function(Select $select){
+							$select->columns(array("city_name","city_id"))
+								   ->order(array("ordering ASC"));
+					})->toArray();
+
+		return $result;
+	}
 
 
 	public function listItemById($id){

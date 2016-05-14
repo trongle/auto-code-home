@@ -1,12 +1,12 @@
-<?php  
+<?php
 namespace Demo\Form;
 
 use Zend\Form\Form;
 
 class FormUser extends Form{
 
-     public function __construct(){
-        parent::__construct();
+ public function __construct(){
+    parent::__construct();
 
 		$this->setAttributes(array(
 		     "id" => "myForm",
@@ -273,11 +273,11 @@ class FormUser extends Form{
 
 		//user_id
 		$this->add(array(
-		     "name" => "user_id",
-		     "type" => "hidden",
-		     "required" => true,
-		));
-     }
+  		     "name" => "user_id",
+  		     "type" => "hidden",
+  		     "required" => true,
+  		));
+  }
 
 
      public function showError(){

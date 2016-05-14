@@ -14,24 +14,25 @@ class UserController extends AbstractActionController
     public function indexAction()
     {
        	$table    =  $this->getServiceLocator()->get("UserTable");
-	
-    		$items    =  $table->listItem();	
+
+    		$items    =  $table->listItem();
 
     		return new ViewModel(array(
     			"items"  => $items,
     		));
-    }  
+    }
+
     //password : @Abc1234
     public function addAction(){
+
       $id    = $this->params('id');
-      $table = $this->getServiceLocator()->get("UserTable"); 
-     
+      $table = $this->getServiceLocator()->get("UserTable");
+      //
       $user  = $table->getUserById($id);
 
-      $form = $this->getServiceLocator()->get('FormElementManager')->get("formDemoUser");
-
+      $form  = $this->getServiceLocator()->get('FormElementManager')->get("formDemoUser");
       if(empty($user)){//kiem tra add hay edit
-        $options = [  'task' => 'add' ];        
+        $options = [  'task' => 'add' ];
         $message = 'User đã được thêm thành công !';
       }else{
         $options = [ 'task' => 'edit' ];
@@ -44,12 +45,12 @@ class UserController extends AbstractActionController
       $options['tableWard']     = $this->getServiceLocator()->get("WardTable");
       $options['tableCity']     = $this->getServiceLocator()->get("CityTable");
       $options['tableDistrict'] = $this->getServiceLocator()->get('DistrictTable');
-      
+
       if($this->request->isPost()){//xu ly khi du lieu duoc post
         $form->setData($this->request->getPost());
         if($form->isValid()){
           $data      =   $form->getData(FormInterface::VALUES_AS_ARRAY);
-        
+
           $tableUser =   $this->getServiceLocator()->get("UserTable");
 
           $tableUser->save($data,$options);
@@ -62,7 +63,7 @@ class UserController extends AbstractActionController
 
 
       $viewModel =  new ViewModel();
-        
+
       $viewModel->setVariables([
           'form'   => $form,
           'action' => $options['task'],
@@ -70,18 +71,18 @@ class UserController extends AbstractActionController
       ]);
       return $viewModel;
      }
-        
+
     public function destroyAction(){
         $id   =   $this->params('id',false);
         if($id){
           $table    =  $this->getServiceLocator()->get("UserTable");
-          
+
           if($table->deleteItem($id)){
                   $message = "Các phần tử đã được xóa";
           }
         }
         $this->flashMessenger()->addMessage($message);
-        
+
         return $this->redirect()->toRoute('demo_user');
     }
 
